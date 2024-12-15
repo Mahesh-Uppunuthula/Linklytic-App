@@ -99,11 +99,9 @@ function TextField({
         );
       }
     }
-
-    setIsInputInvalid(_isValid);
+    setIsInputInvalid(!_isValid);
   };
-  console.log({ isInputInvalid, isInvalid });
-
+  
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _value = event.target.value;
     validateInput(_value);
