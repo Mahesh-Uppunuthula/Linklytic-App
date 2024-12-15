@@ -7,6 +7,7 @@ import { EMAIL_REGEX } from "../../constants";
 interface TextField
   extends Omit<React.ComponentPropsWithoutRef<"input">, "defaultValue"> {
   type: "email" | "text" | "number" | "password";
+  value: StrOrNum;
   className?: string;
   minWidth?: number;
   minHeight?: number;
@@ -16,8 +17,6 @@ interface TextField
   errorMessage?: string;
   helperMessage?: string;
   helperMessageAppearance?: Appearance;
-  isRequired?: boolean;
-  label?: string;
 }
 
 function TextField({
@@ -35,8 +34,6 @@ function TextField({
   iconAfter,
   helperMessage,
   helperMessageAppearance,
-  isRequired,
-  label = "",
   value,
   pattern,
   onKeyUp,
@@ -44,11 +41,7 @@ function TextField({
   ...props
 }: TextField) {
   const inputFieldRef = useRef<HTMLInputElement>(null);
-  const [inputValue, setInputValue] = useState<StrOrNum>(
-    type === "number" ? 0 : "" // if default exists give priority to default value
-  );
   const [isInputInvalid, setIsInputInvalid] = useState<Boolean>(false);
-  const [showRequiredMessage, setShowRequiredMessage] = useState(false);
 
   const containerClassNames = cn(
     {
@@ -79,10 +72,7 @@ function TextField({
       "text-primary-regular": helperMessageAppearance === "primary",
       "text-success-regular": helperMessageAppearance === "success",
       "text-warning-regular": helperMessageAppearance === "warning",
-      "text-danger-regular":
-        showRequiredMessage ||
-        isInvalid ||
-        helperMessageAppearance === "danger",
+      "text-danger-regular": isInvalid || helperMessageAppearance === "danger",
       "text-discovery-regular": helperMessageAppearance === "discovery",
     },
     "text-xs my-1"
@@ -90,8 +80,6 @@ function TextField({
 
   function message() {
     if (isInvalid && errorMessage.trim().length > 0) return errorMessage;
-    if (isRequired && (showRequiredMessage || isInvalid))
-      return "This field is required";
     if (helperMessage && helperMessage.length > 0) return helperMessage;
   }
 
@@ -100,55 +88,30 @@ function TextField({
   };
 
   const validateInput = (value: string) => {
-    let _isValid = false;
+    let _isValid = true;
     if (pattern) {
       _isValid = !!pattern.match(value);
     } else {
       if (type === "email") {
-        const _isValid = EMAIL_REGEX.test(value);
-        setIsInputInvalid(!!_isValid);
+        _isValid = !!EMAIL_REGEX.test(value);
         inputFieldRef.current?.setCustomValidity(
           _isValid ? "" : "Invalid email"
-        );
-      } else {
-        _isValid = value.trim().length > 0;
-        inputFieldRef.current?.setCustomValidity(
-          _isValid ? "" : "This field is required"
         );
       }
     }
 
     setIsInputInvalid(_isValid);
   };
+  console.log({ isInputInvalid, isInvalid });
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _value = event.target.value;
-    // considers spaces as well
-    const hasSomeValue = !!_value.length;
-
-    setInputValue(_value);
-    setShowRequiredMessage(!hasSomeValue);
     validateInput(_value);
     onChange && onChange(event);
   };
 
-  const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.code === "Enter") {
-      setShowRequiredMessage(
-        () => !!isRequired && inputValue.toString().length === 0
-      );
-    }
-    onKeyUp && onKeyUp(event);
-  };
-
   return (
     <div className="w-full h-full flex flex-col gap-1 place-items-start">
-      {!!label.trim().length && (
-        <label className="text-gray-500 text-xs font-medium flex gap-[2px]">
-          <span>{label.trim()}</span>
-          {isRequired && <span className="text-[.9rem] text-red-600">*</span>}
-        </label>
-      )}
       <div className={containerClassNames}>
         <div className="flex justify-start place-items-center">
           {iconBefore && (
@@ -157,7 +120,6 @@ function TextField({
             </div>
           )}
           <input
-            id={"custom-text-field"}
             ref={inputFieldRef}
             {...props}
             pattern={pattern}
@@ -166,7 +128,6 @@ function TextField({
             className={inputClassNames}
             type={type}
             onChange={handleOnChange}
-            onKeyUp={handleKeyUp}
           />
           {isInvalid ? (
             <div
@@ -183,8 +144,8 @@ function TextField({
             )
           )}
         </div>
-        {renderHelperMessage()}
       </div>
+      {renderHelperMessage()}
     </div>
   );
 }
