@@ -5,7 +5,10 @@ import { Appearance, StrOrNum } from "../../Types/global";
 import { EMAIL_REGEX } from "../../constants";
 
 interface TextField
-  extends Omit<React.ComponentPropsWithoutRef<"input">, "defaultValue"> {
+  extends Omit<
+    React.ComponentPropsWithoutRef<"input">,
+    "defaultValue" | "pattern"
+  > {
   type: "email" | "text" | "number" | "password";
   value: StrOrNum;
   className?: string;
@@ -16,7 +19,8 @@ interface TextField
   isInvalid?: boolean;
   errorMessage?: string;
   helperMessage?: string;
-  helperMessageAppearance?: Appearance;
+  messageAppearance?: Appearance;
+  pattern?: RegExp;
 }
 
 function TextField({
@@ -33,7 +37,7 @@ function TextField({
   iconBefore,
   iconAfter,
   helperMessage,
-  helperMessageAppearance,
+  messageAppearance,
   value,
   pattern,
   onKeyUp,
@@ -48,7 +52,8 @@ function TextField({
       // default styles
       "w-full h-full rounded pointer-events-none outline outline-1 outline-gray-300 ":
         true,
-      "focus-within:outline-2 focus-within:outline-primary-regular": true,
+      "focus-within:outline-2 focus-within:outline-primary-regular":
+        !isInvalid && !isInputInvalid,
       // active styles
 
       //focus styles
@@ -68,18 +73,20 @@ function TextField({
 
   const helperMessageClassNames = cn(
     {
-      "text-gray-400": helperMessageAppearance === "default",
-      "text-primary-regular": helperMessageAppearance === "primary",
-      "text-success-regular": helperMessageAppearance === "success",
-      "text-warning-regular": helperMessageAppearance === "warning",
-      "text-danger-regular": isInvalid || helperMessageAppearance === "danger",
-      "text-discovery-regular": helperMessageAppearance === "discovery",
+      "text-gray-400": messageAppearance === "default",
+      "text-primary-regular": messageAppearance === "primary",
+      "text-success-regular": messageAppearance === "success",
+      "text-warning-regular": messageAppearance === "warning",
+      "text-danger-regular":
+        isInvalid || isInputInvalid || messageAppearance === "danger",
+      "text-discovery-regular": messageAppearance === "discovery",
     },
     "text-xs my-1"
   );
 
   function message() {
-    if (isInvalid && errorMessage.trim().length > 0) return errorMessage;
+    if ((isInvalid || isInputInvalid) && errorMessage.trim().length > 0)
+      return errorMessage;
     if (helperMessage && helperMessage.length > 0) return helperMessage;
   }
 
@@ -90,7 +97,10 @@ function TextField({
   const validateInput = (value: string) => {
     let _isValid = true;
     if (pattern) {
-      _isValid = !!pattern.match(value);
+      _isValid = pattern.test(value);
+      inputFieldRef.current?.setCustomValidity(
+        _isValid ? "" : "Invalid password"
+      );
     } else {
       if (type === "email") {
         _isValid = !!EMAIL_REGEX.test(value);
@@ -101,7 +111,7 @@ function TextField({
     }
     setIsInputInvalid(!_isValid);
   };
-  
+
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _value = event.target.value;
     validateInput(_value);
@@ -120,14 +130,13 @@ function TextField({
           <input
             ref={inputFieldRef}
             {...props}
-            pattern={pattern}
             value={value}
             tabIndex={0}
             className={inputClassNames}
             type={type}
             onChange={handleOnChange}
           />
-          {isInvalid ? (
+          {isInvalid || isInputInvalid ? (
             <div
               title={helperMessage ?? ""}
               className={cn(`mx-1 text-xl text-danger-regular`)}
