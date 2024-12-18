@@ -21,6 +21,7 @@ function Button({
   appearance = "default",
   size = "medium",
   bolded,
+  disabled,
   iconBefore,
   iconAfter,
   className,
@@ -36,6 +37,7 @@ function Button({
       // psuedo classes
       "focus:outline-2 focus:outline-primary-regular focus:outline-offset-2 ":
         true,
+      "disabled:cursor-not-allowed": true,
 
       // sizes
       "min-w-4 min-h-4 text-xs scale-100": size === "small",
@@ -99,11 +101,14 @@ function Button({
       "text-success-regular bg-success-light":
         variant === "soft" && appearance === "success",
       "bg-default-light": variant === "soft" && appearance === "default",
+
+      //disabled
+      "bg-default-light text-default-regular": disabled,
     },
     className
   );
   return (
-    <button {...props} className={classNames}>
+    <button {...props} disabled={disabled} className={classNames}>
       {iconBefore && <span>{iconBefore}</span>}
       <span>{children}</span>
       {iconAfter && <span>{iconAfter}</span>}
