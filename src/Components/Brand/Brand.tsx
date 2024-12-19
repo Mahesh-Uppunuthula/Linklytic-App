@@ -2,9 +2,10 @@ import { FiLink } from "react-icons/fi";
 import Link from "../Button/Link";
 type BrandProps = {
   size?: string | number;
+  showText?: boolean;
 };
 
-function Brand({ size = "1.5rem", ...props }: BrandProps) {
+function Brand({ size = "1.5rem", showText = true, ...props }: BrandProps) {
   return (
     <div {...props}>
       <Link
@@ -18,7 +19,7 @@ function Brand({ size = "1.5rem", ...props }: BrandProps) {
           />
         }
       >
-        Brand
+        {showText && "Brand"}
       </Link>
     </div>
   );
