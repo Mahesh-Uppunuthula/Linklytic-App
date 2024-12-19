@@ -5,6 +5,7 @@ import Field from "../Components/Field/Field";
 import Brand from "../Components/Brand/Brand";
 import Link from "../Components/Button/Link";
 import { useNavigate } from "react-router-dom";
+import { PATH_CONSTANTS } from "../Routes/pathConstants";
 
 const FIELDS = {
   EMAIL: "email",
@@ -80,7 +81,7 @@ function Login() {
         <div className="flex place-items-center gap-2 mb-7">
           <span className="text-gray-600 text-sm">
             <Link
-              to={"/forgot-password"}
+              to={PATH_CONSTANTS.FORGOT_PASSWORD}
               className="text-primary-regular font-medium"
             >
               Forgot password ?
@@ -100,7 +101,7 @@ function Login() {
       <div className="text-gray-600 text-sm">
         <span>Don't have an account?</span>
         <span className="text-primary-regular mx-1 font-medium">
-          <Link to={"/signup"}>Sign Up for free !!</Link>
+          <Link to={PATH_CONSTANTS.SIGNUP}>Sign Up for free !!</Link>
         </span>
       </div>
     </div>

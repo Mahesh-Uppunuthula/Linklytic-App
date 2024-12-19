@@ -1,6 +1,9 @@
 export const PATH_CONSTANTS = {
-  HOME: "",
-  ABOUT: "about",
-  LOGIN: "login",
-  SIGNUP: "signup",
+  HOME: "/",
+  ABOUT: "/about",
+  LOGIN: "/login",
+  SIGNUP: "/signup",
+  TERMS_AND_CONDITIONS: "/terms-conditions",
+  FORGOT_PASSWORD: "/forgot-password",
+  DASHBOARD: "/dashboard",
 };

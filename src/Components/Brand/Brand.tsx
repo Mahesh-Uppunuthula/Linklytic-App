@@ -1,5 +1,6 @@
 import { FiLink } from "react-icons/fi";
 import Link from "../Button/Link";
+import { PATH_CONSTANTS } from "../../Routes/pathConstants";
 type BrandProps = {
   size?: string | number;
   showText?: boolean;
@@ -9,7 +10,7 @@ function Brand({ size = "1.5rem", showText = true, ...props }: BrandProps) {
   return (
     <div {...props}>
       <Link
-        to={"/"}
+        to={PATH_CONSTANTS.HOME}
         iconBefore={
           <FiLink
             id="brand-logo"

@@ -5,6 +5,7 @@ import Signup from "../Pages/Signup";
 
 const Home = lazy(() => import("../Pages/Home"));
 const About = lazy(() => import("../Pages/About"));
+const Dashboard = lazy(() => import("../Pages/Dashboard"));
 
 export const RootRoutes = [
   {
@@ -14,6 +15,13 @@ export const RootRoutes = [
   {
     path: PATH_CONSTANTS.ABOUT,
     element: <About />,
+  },
+];
+
+export const AppRoutes = [
+  {
+    path: PATH_CONSTANTS.DASHBOARD,
+    element: <Dashboard />,
   },
 ];
 

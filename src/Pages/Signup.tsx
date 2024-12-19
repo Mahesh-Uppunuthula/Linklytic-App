@@ -6,6 +6,7 @@ import Brand from "../Components/Brand/Brand";
 import { PASSWORD_REGEX } from "../constants";
 import Link from "../Components/Button/Link";
 import { useNavigate } from "react-router-dom";
+import { PATH_CONSTANTS } from "../Routes/pathConstants";
 
 const FIELDS = {
   NAME: "name",
@@ -40,7 +41,7 @@ function Signup() {
 
   function signupUser() {
     // axios post request
-    navigate("/welcome-page");
+    navigate(PATH_CONSTANTS.DASHBOARD);
   }
 
   const handleFormSubmit = (event: React.FormEvent) => {
@@ -147,7 +148,7 @@ function Signup() {
           <span className="text-gray-600 text-sm">
             I agree to all{" "}
             <Link
-              to={"/terms-conditions"}
+              to={PATH_CONSTANTS.TERMS_AND_CONDITIONS}
               className="text-primary-regular font-medium"
             >
               terms & conditions
@@ -167,7 +168,7 @@ function Signup() {
       <div className="text-gray-600 text-sm">
         <span>Already have an account?</span>
         <span className="text-primary-regular mx-1 font-medium">
-          <Link to={"/login"}>Login here</Link>
+          <Link to={PATH_CONSTANTS.LOGIN}>Login here</Link>
         </span>
       </div>
     </div>

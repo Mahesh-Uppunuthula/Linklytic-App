@@ -1,8 +1,11 @@
+import { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import { RootRoutes, AuthRoutes, AppRoutes } from "./Routes";
 import RootLayout from "./Layouts/RootLayout";
-import { RootRoutes, AuthRoutes } from "./Routes";
-import Page404 from "./Pages/Errors/Page404";
 import AuthLayout from "./Layouts/AuthLayout";
+import AppLayout from "./Layouts/AppLayout";
+const Page404 = lazy(() => import("./Pages/Errors/Page404"));
 
 export default function App() {
   const router = createBrowserRouter([
@@ -15,6 +18,11 @@ export default function App() {
       path: "/",
       element: <AuthLayout />,
       children: AuthRoutes,
+    },
+    {
+      path: "/",
+      element: <AppLayout />,
+      children: AppRoutes,
     },
     {
       path: "*",
