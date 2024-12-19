@@ -41,7 +41,7 @@ function HeroSection() {
       >
         <div className="w-[80%] h-full">
           <TextField
-            isRequired
+            key="URL"
             iconBefore={<FiLink className="text-gray-400 text-lg" />}
             type="text"
             placeholder="ex: https://super-long-url.com/shorten-it"
@@ -57,7 +57,7 @@ function HeroSection() {
                 ? "This field cannot be empty"
                 : "invalid url"
             }
-            helperMessageAppearance="default"
+            messageAppearance="default"
             onInvalid={() => {
               console.log("on invalid");
             }}
