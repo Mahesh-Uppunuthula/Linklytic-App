@@ -6,6 +6,7 @@ import Brand from "../Components/Brand/Brand";
 import Link from "../Components/Button/Link";
 import { useNavigate } from "react-router-dom";
 import { PATH_CONSTANTS } from "../Routes/pathConstants";
+import useAuth from "../hooks/useAuth";
 
 const FIELDS = {
   EMAIL: "email",
@@ -14,6 +15,7 @@ const FIELDS = {
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -24,7 +26,8 @@ function Login() {
 
   function loginUser() {
     // axios post request
-    navigate("/dashboard");
+    login();
+    navigate(PATH_CONSTANTS.DASHBOARD);
   }
 
   const handleFormSubmit = (event: React.FormEvent) => {
