@@ -1,20 +1,31 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, To } from "react-router-dom";
 import { cn } from "../../Utils/helpers";
 import Brand from "../Brand/Brand";
 import Button from "../Button/Button";
+import { PATH_CONSTANTS } from "../../Routes/pathConstants";
+import UserMenu from "../Menu/UserMenu";
+import useAuth from "../../hooks/useAuth";
 
-const NavBarItems = [
+type NavBarItemType = {
+  to: To;
+  label: String;
+  key: React.Key;
+};
+
+const UNAUTHENTICATED_USER_NAVBAR_ITEMS: NavBarItemType[] = [
   {
-    to: "",
+    to: PATH_CONSTANTS.HOME,
     label: "Home",
     key: "home",
   },
   {
-    to: "/about",
+    to: PATH_CONSTANTS.ABOUT,
     label: "About",
     key: "about",
   },
 ];
+
+const AUTHENTICATED_USER_NAVBAR_ITEMS: NavBarItemType[] = [];
 
 const styles = {
   active:
@@ -24,11 +35,23 @@ const styles = {
 
 export default function Header() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  console.log({ isAuthenticated });
+
   return (
-    <header className="flex justify-around place-items-center">
+    <header
+      className={cn(
+        isAuthenticated
+          ? "flex justify-between place-items-center"
+          : "flex justify-around place-items-center"
+      )}
+    >
       <Brand />
       <nav className="flex justify-center place-items-center gap-5 text-sm">
-        {NavBarItems.map(({ label, to, key }) => (
+        {(isAuthenticated
+          ? AUTHENTICATED_USER_NAVBAR_ITEMS
+          : UNAUTHENTICATED_USER_NAVBAR_ITEMS
+        ).map(({ label, to, key }) => (
           <NavLink
             key={key}
             to={to}
@@ -40,24 +63,32 @@ export default function Header() {
           </NavLink>
         ))}
       </nav>
-      {/* login and sign up buttons go here */}
-      <div className="inline-flex gap-4 place-items-center ">
-        <Button
-          className="min-w-4 min-h-4"
-          appearance="primary"
-          variant="outlined"
-          onClick={() => navigate("/login")}
-        >
-          Log in
-        </Button>
-        <Button
-          appearance="primary"
-          variant="solid"
-          onClick={() => navigate("/signup")}
-        >
-          Sign up
-        </Button>
-      </div>
+      <>
+        {isAuthenticated ? (
+          <div>
+            <UserMenu />
+          </div>
+        ) : (
+          <div className="inline-flex gap-4 place-items-center ">
+            {/* login and sign up buttons go here */}
+            <Button
+              className="min-w-4 min-h-4"
+              appearance="primary"
+              variant="outlined"
+              onClick={() => navigate("/login")}
+            >
+              Log in
+            </Button>
+            <Button
+              appearance="primary"
+              variant="solid"
+              onClick={() => navigate("/signup")}
+            >
+              Sign up
+            </Button>
+          </div>
+        )}
+      </>
     </header>
   );
 }
