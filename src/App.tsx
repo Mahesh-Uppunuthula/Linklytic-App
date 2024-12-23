@@ -5,6 +5,7 @@ import { RootRoutes, AuthRoutes, AppRoutes } from "./Routes";
 import RootLayout from "./Layouts/RootLayout";
 import AuthLayout from "./Layouts/AuthLayout";
 import AppLayout from "./Layouts/AppLayout";
+import { AuthProvider } from "./context/AuthContext";
 const Page404 = lazy(() => import("./Pages/Errors/Page404"));
 
 export default function App() {
@@ -31,7 +32,9 @@ export default function App() {
   ]);
   return (
     <>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </>
   );
 }
