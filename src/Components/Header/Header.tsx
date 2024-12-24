@@ -36,13 +36,12 @@ const styles = {
 export default function Header() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  console.log({ isAuthenticated });
 
   return (
     <header
       className={cn(
         isAuthenticated
-          ? "flex justify-between place-items-center"
+          ? "flex justify-between place-items-center mx-2 mb-2"
           : "flex justify-around place-items-center"
       )}
     >
