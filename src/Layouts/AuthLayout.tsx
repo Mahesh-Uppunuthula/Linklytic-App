@@ -1,11 +1,17 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { PATH_CONSTANTS } from "../Routes/pathConstants";
 import useAuth from "../hooks/useAuth";
+import { useEffect } from "react";
 
 function AuthLayout() {
-  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  if (isAuthenticated) navigate(PATH_CONSTANTS.DASHBOARD);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(PATH_CONSTANTS.DASHBOARD);
+      return;
+    }
+  }, [isAuthenticated]);
   return (
     <div className="w-dvw h-dvh flex gap-1 justify-between">
       {/* Banner */}
