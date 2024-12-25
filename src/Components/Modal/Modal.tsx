@@ -22,7 +22,7 @@ type ModalBodyType = {
 
 type ModalTitleType = {
   title: string;
-  className: ClassValue;
+  className?: ClassValue;
 };
 
 // components
