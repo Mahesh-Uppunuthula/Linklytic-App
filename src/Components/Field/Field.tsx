@@ -3,7 +3,7 @@ import { cn } from "../../Utils/helpers";
 
 type FieldType = {
   className?: string;
-  isRequired: boolean;
+  isRequired?: boolean;
   name: string;
 };
 function Field(
@@ -16,7 +16,7 @@ function Field(
       {...props}
       className={cn(
         className,
-        "text-gray-500 text-xs font-medium flex gap-[2px]"
+        "text-gray-500 text-sm font-medium flex gap-[2px]"
       )}
     >
       {!!name.trim().length ? (
