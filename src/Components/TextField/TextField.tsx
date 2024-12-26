@@ -145,7 +145,7 @@ function TextField({
             value={value}
             tabIndex={0}
             className={inputClassNames}
-            type="url"
+            type={type}
             onChange={handleOnChange}
           />
           {isInvalid || isInputInvalid ? (
