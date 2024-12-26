@@ -2,14 +2,14 @@ import React, { ChangeEvent, useRef, useState } from "react";
 import { cn } from "../../Utils/helpers";
 import { IoIosInformationCircle } from "react-icons/io";
 import { Appearance, StrOrNum } from "../../Types/global";
-import { EMAIL_REGEX } from "../../constants";
+import { EMAIL_REGEX, URL_REGEX } from "../../constants";
 
 interface TextField
   extends Omit<
     React.ComponentPropsWithoutRef<"input">,
     "defaultValue" | "pattern"
   > {
-  type: "email" | "text" | "number" | "password";
+  type: "email" | "text" | "number" | "password" | "url";
   value: StrOrNum;
   className?: string;
   minWidth?: number;
@@ -62,7 +62,7 @@ function TextField({
 
       // invalid styles
       "outline-2 outline-danger-regular": isInvalid || isInputInvalid,
-      "has-[:invalid]:outline-danger-regular": true,
+      "has-[:invalid]:outline-danger-regular ": true,
     },
     `min-w-[${minWidth}] min-h-[${minHeight}]`,
     className
@@ -102,11 +102,23 @@ function TextField({
         _isValid ? "" : "Invalid password"
       );
     } else {
-      if (type === "email") {
-        _isValid = !!EMAIL_REGEX.test(value);
-        inputFieldRef.current?.setCustomValidity(
-          _isValid ? "" : "Invalid email"
-        );
+      switch (type) {
+        case "email":
+          _isValid = !!EMAIL_REGEX.test(value);
+          inputFieldRef.current?.setCustomValidity(
+            _isValid ? "" : "Invalid email"
+          );
+          break;
+        case "url":
+          _isValid = !!URL_REGEX.test(value);
+          console.log("URL", { value, _isValid });
+          inputFieldRef.current?.setCustomValidity(
+            _isValid ? "" : "Invalid URL"
+          );
+          break;
+
+        default:
+          break;
       }
     }
     setIsInputInvalid(!_isValid);
@@ -133,7 +145,7 @@ function TextField({
             value={value}
             tabIndex={0}
             className={inputClassNames}
-            type={type}
+            type="url"
             onChange={handleOnChange}
           />
           {isInvalid || isInputInvalid ? (
