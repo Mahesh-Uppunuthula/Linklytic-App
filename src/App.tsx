@@ -6,6 +6,7 @@ import RootLayout from "./Layouts/RootLayout";
 import AuthLayout from "./Layouts/AuthLayout";
 import AppLayout from "./Layouts/AppLayout";
 import { AuthProvider } from "./context/AuthContext";
+import Error from "./Pages/Errors/Error";
 const Page404 = lazy(() => import("./Pages/Errors/Page404"));
 
 export default function App() {
@@ -14,16 +15,19 @@ export default function App() {
       path: "/",
       element: <RootLayout />,
       children: RootRoutes,
+      errorElement: <Error />,
     },
     {
       path: "/",
       element: <AuthLayout />,
       children: AuthRoutes,
+      errorElement: <Error />,
     },
     {
       path: "/",
       element: <AppLayout />,
       children: AppRoutes,
+      errorElement: <Error />,
     },
     {
       path: "*",
