@@ -2,6 +2,9 @@ import { VscDebugDisconnect } from "react-icons/vsc";
 import Brand from "../../Components/Brand/Brand";
 import Button from "../../Components/Button/Button";
 import { IoReload } from "react-icons/io5";
+import Link from "../../Components/Button/Link";
+import { PATH_CONSTANTS } from "../../Routes/pathConstants";
+import { BiSupport } from "react-icons/bi";
 
 const Error = () => {
   return (
@@ -19,18 +22,28 @@ const Error = () => {
           </div>
 
           {/* message and take me home */}
-          <div className="flex flex-col place-items-center gap-10">
-            <div>We're sorry, something went wrong :(</div>
-            <div className="flex justify-center place-items-center gap-7">
-              <Button
-                appearance="primary"
-                bolded
-                iconBefore={<IoReload strokeWidth={1} size={15} />}
-                onClick={() => window.location.reload()}
-              >
-                Reload the page
-              </Button>
-            </div>
+          <div className="flex flex-col place-items-center gap-1">
+            {/* <div>We're sorry, something went wrong :(</div> */}
+            <p>Brace yourself till we get the error fixed.</p>
+            <p>You may also refresh the page or try again later</p>
+          </div>
+          <div className="flex justify-center place-items-center my-4 gap-10">
+            <Button
+              appearance="primary"
+              bolded
+              iconBefore={<IoReload strokeWidth={1} size={21} />}
+              onClick={() => window.location.reload()}
+            >
+              Reload the page
+            </Button>
+            <Button
+              appearance="primary"
+              variant="text"
+              bolded
+              iconBefore={<BiSupport size={21} />}
+            >
+              <Link to={PATH_CONSTANTS.HELP_CENTER}>visit our help center</Link>
+            </Button>
           </div>
         </div>
       </div>
