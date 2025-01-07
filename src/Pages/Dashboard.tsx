@@ -1,7 +1,8 @@
 import { Fragment, useReducer, useState } from "react";
 import Button from "../Components/Button/Button";
-import { cn } from "../Utils/helpers";
+// import { cn } from "../Utils/helpers";
 import LinkFormModal from "../Components/Modals/LinkFormModal";
+import UrlItem from "../Components/UrlItem/UrlItem";
 
 // type LinkStatusType = "ACTIVE" | "EXPIRED" | "DISABLED";
 
@@ -81,10 +82,11 @@ function linkReducer(links: Link[], action: LinkReducerDispatch) {
   console.log({ links, action, payload });
 
   switch (type) {
-    case "create-link":
+    case "create-link": {
       console.log("create-link");
       const newLink = createLink(payload.link);
       return [...links, newLink];
+    }
     case "delete-link":
       return links;
     // updatedLink();
@@ -144,7 +146,7 @@ function Dashboard() {
           </Button>
         </div>
         {/* Links Table */}
-        <div className="w-full my-3 p-2">
+        {/* <div className="w-full my-3 p-2">
           <table className="w-full ">
             <thead>
               <tr>
@@ -178,6 +180,18 @@ function Dashboard() {
               ))}
             </tbody>
           </table>
+        </div> */}
+
+        <div className="w-full h-full my-5 grid grid-cols-2 gap-4">
+          {links.map((link) => (
+            <UrlItem
+              key={link.name}
+              name={link.name}
+              longUrl={link.longURL}
+              lastModified={link.updatedAt}
+              shortenedUrlId={link.shortenedURL}
+            />
+          ))}
         </div>
       </div>
     </Fragment>
