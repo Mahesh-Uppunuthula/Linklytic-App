@@ -51,13 +51,17 @@ const ModalTitle: React.FC<ModalTitleType> = ({ title, className }) => {
   );
 };
 
-// TODO - add transition for modal, if opened in phone show full screen,
-const Modal: React.FC<ModalType> = ({ children, size = "small", onClose }) => {
+// TODO - add transition for modal, if opened in phone show full screen, fix modal closing on releasing mouse click on overlay issue
+const Modal: React.FC<ModalType> = ({
+  children,
+  size = "small",
+  onClose = () => {},
+}) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const handleOnClickOverlay = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    onClose && onClose();
+    onClose?.();
   };
 
   const classNames = cn({
