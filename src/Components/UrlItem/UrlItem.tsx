@@ -1,28 +1,32 @@
 import React, { ComponentPropsWithRef } from "react";
 import { LOCAL_APP_BASE_URL } from "../../constants";
 import Button from "../Button/Button";
-import { TbLocation, TbPencil } from "react-icons/tb";
-import { BsArrowUpRightSquare } from "react-icons/bs";
-import { RiEditLine } from "react-icons/ri";
+import { TbLocation } from "react-icons/tb";
 import { AiOutlineEdit } from "react-icons/ai";
 import Link from "../Button/Link";
 
+export type URL_ITEM_ACTIONS = "edit-url";
+
 type UrlItem = ComponentPropsWithRef<"div"> & {
+  id: string;
   name: string;
   shortenedUrlId: string;
   longUrl: string;
   lastModified: string;
+  onAction: (action: URL_ITEM_ACTIONS, id: string) => void;
 };
 
 const UrlItem: React.FC<UrlItem> = ({
+  id,
   name,
   longUrl,
   shortenedUrlId,
   lastModified,
+  onAction = () => {},
 }) => {
   const shortUrl = `${LOCAL_APP_BASE_URL}/${shortenedUrlId}`;
   return (
-    <div className="w-full h-fit flex flex-col gap-1 justify-start p-3 rounded-md border border-gray-200 shadow-md">
+    <div className="w-full h-fit flex flex-col gap-1 justify-start p-3 rounded-md border border-gray-200 shadow-md hover:shadow-lg hover:border-primary-regular hover:duration-500 ">
       <div className="p-2">
         {/* Short.Link / Name  & actions*/}
         <div className="flex justify-between place-items-center flex-nowrap gap-2">
@@ -38,7 +42,12 @@ const UrlItem: React.FC<UrlItem> = ({
           </div>
           {/* action buttons */}
           <div className="flex gap-3 place-items-center">
-            <Button appearance="primary" variant="soft" title="Edit Link">
+            <Button
+              appearance="primary"
+              variant="soft"
+              title="Edit Link"
+              onClick={() => onAction("edit-url", id)}
+            >
               <AiOutlineEdit size={19} />
             </Button>
             <Link to={shortUrl} target="_blank" rel="noopener noreferrer">
