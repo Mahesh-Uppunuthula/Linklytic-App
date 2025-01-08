@@ -40,12 +40,11 @@ function TextField({
   messageAppearance,
   value,
   pattern,
-  onKeyUp,
   onChange,
   ...props
 }: TextField) {
   const inputFieldRef = useRef<HTMLInputElement>(null);
-  const [isInputInvalid, setIsInputInvalid] = useState<Boolean>(false);
+  const [isInputInvalid, setIsInputInvalid] = useState<boolean>(false);
 
   const containerClassNames = cn(
     {
@@ -63,12 +62,14 @@ function TextField({
       // invalid styles
       "outline-2 outline-danger-regular": isInvalid || isInputInvalid,
       "has-[:invalid]:outline-danger-regular ": true,
+      "cursor-not-allowed text-neutral-600 bg-gray-50": props.disabled,
     },
     `min-w-[${minWidth}] min-h-[${minHeight}]`,
     className
   );
   const inputClassNames = cn(
-    `w-full outline-none p-2 pointer-events-auto placeholder-gray-400  placeholder-opacity-75 flex-grow`
+    `w-full outline-none p-2 pointer-events-auto placeholder-gray-400  placeholder-opacity-75 flex-grow`,
+    { "cursor-not-allowed": props.disabled }
   );
 
   const helperMessageClassNames = cn(
@@ -127,7 +128,7 @@ function TextField({
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _value = event.target.value;
     validateInput(_value);
-    onChange && onChange(event);
+    onChange?.(event);
   };
 
   return (
@@ -140,6 +141,7 @@ function TextField({
             </div>
           )}
           <input
+            title={props.disabled ? "disabled" : props.title}
             ref={inputFieldRef}
             {...props}
             value={value}
