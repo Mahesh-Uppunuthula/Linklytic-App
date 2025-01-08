@@ -2,11 +2,12 @@ import { Fragment, useReducer, useState } from "react";
 import Button from "../Components/Button/Button";
 // import { cn } from "../Utils/helpers";
 import LinkFormModal from "../Components/Modals/LinkFormModal";
-import UrlItem from "../Components/UrlItem/UrlItem";
+import UrlItem, { URL_ITEM_ACTIONS } from "../Components/UrlItem/UrlItem";
 
 // type LinkStatusType = "ACTIVE" | "EXPIRED" | "DISABLED";
 
 type Link = {
+  _id: string;
   name: string;
   longURL: string;
   shortenedURL: string;
@@ -35,6 +36,7 @@ const Headers = [
 
 const dummyLinks: Link[] = [
   {
+    _id: "Insta link 1",
     name: "Insta link",
     longURL: "original link",
     shortenedURL: "shortened link",
@@ -42,6 +44,7 @@ const dummyLinks: Link[] = [
     updatedAt: "25 Dec, 2024",
   },
   {
+    _id: "Insta link 2",
     name: "Insta link 2",
     longURL: "original link 2",
     shortenedURL: "shortened link 2",
@@ -49,6 +52,7 @@ const dummyLinks: Link[] = [
     updatedAt: "25 Dec, 2024",
   },
   {
+    _id: "Insta link 3",
     name: "Insta link 3",
     longURL: "original link 3",
     shortenedURL: "shortened link 3",
@@ -101,6 +105,7 @@ function linkReducer(links: Link[], action: LinkReducerDispatch) {
 
 function createLink(link: CreateLinkInput): Link {
   return {
+    _id: `id-${link.name}`,
     name: link.name,
     longURL: link.longURL,
     createdAt: Date.now().toString(),
@@ -112,14 +117,39 @@ function createLink(link: CreateLinkInput): Link {
 function Dashboard() {
   const [links, dispatch] = useReducer(linkReducer, [...dummyLinks]);
   const [isCreateMode, setIsCreateMode] = useState(false);
-  const [isCreateLinkModalOpen, setIsCreateLinkModalOpen] = useState(false);
+  const [isCreateOrUpdateLinkModalOpen, setIsCreateOrUpdateLinkModalOpen] =
+    useState(false);
 
-  const closeAddLinkModal = () => setIsCreateLinkModalOpen(false);
+  const [editUrlId, setEditUrlId] = useState("");
+
+  const closeAddLinkModal = () => {
+    setEditUrlId("");
+    setIsCreateOrUpdateLinkModalOpen(false);
+  };
+
+  const handleUrlItemAction = (action: URL_ITEM_ACTIONS, id: string) => {
+    switch (action) {
+      case "edit-url":
+        {
+          setEditUrlId(id);
+          setIsCreateOrUpdateLinkModalOpen(true);
+        }
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <Fragment>
-      {isCreateLinkModalOpen && (
+      {isCreateOrUpdateLinkModalOpen && (
         <LinkFormModal
+          isEditMode={editUrlId.trim().length > 0}
+          link={
+            links.find((link) => link._id === editUrlId) ??
+            ({ name: "", longURL: "" } as CreateLinkInput)
+          }
           closeModal={closeAddLinkModal}
           submitLink={(link) =>
             dispatch({
@@ -139,7 +169,7 @@ function Dashboard() {
             bolded
             onClick={() => {
               setIsCreateMode(true);
-              setIsCreateLinkModalOpen(true);
+              setIsCreateOrUpdateLinkModalOpen(true);
             }}
           >
             Create Short URL
@@ -185,11 +215,13 @@ function Dashboard() {
         <div className="w-full h-full my-5 grid grid-cols-2 gap-4">
           {links.map((link) => (
             <UrlItem
-              key={link.name}
+              key={link._id}
+              id={link._id}
               name={link.name}
               longUrl={link.longURL}
               lastModified={link.updatedAt}
               shortenedUrlId={link.shortenedURL}
+              onAction={handleUrlItemAction}
             />
           ))}
         </div>

@@ -10,22 +10,36 @@ import Field from "../Field/Field";
 import { CreateLinkInput } from "../../Pages/Dashboard";
 import { useState } from "react";
 
+type LinkFormModalPropsCreateMode = {
+  isEditMode: false;
+};
+type LinkFormModalPropsEditMode = {
+  isEditMode: true;
+  link: CreateLinkInput;
+};
+
 type LinkFormModalProps = {
   submitLink: (link: CreateLinkInput) => void;
   closeModal: () => void;
-};
+} & (LinkFormModalPropsCreateMode | LinkFormModalPropsEditMode);
 
 type CreateLinkFormFields = keyof CreateLinkInput;
 type CreateLinkFormFieldsType = CreateLinkInput[keyof CreateLinkInput];
 
 const LinkFormModal: React.FC<LinkFormModalProps> = ({
+  isEditMode,
   submitLink,
   closeModal,
+  ...props
 }) => {
-  const [createLinkForm, setCreateLinkForm] = useState<CreateLinkInput>({
-    name: "",
-    longURL: "",
-  });
+  const [createLinkForm, setCreateLinkForm] = useState<CreateLinkInput>(
+    isEditMode && "link" in props
+      ? props.link
+      : {
+          name: "",
+          longURL: "",
+        }
+  );
 
   const handleOnChangeFormData = (
     field: CreateLinkFormFields,
@@ -49,7 +63,7 @@ const LinkFormModal: React.FC<LinkFormModalProps> = ({
   return (
     <Modal size="medium" onClose={handleCloseModal}>
       <ModalHeader>
-        <ModalTitle title="Add New Link" />
+        <ModalTitle title={isEditMode ? "Edit Link" : "Add New Link"} />
       </ModalHeader>
       <ModalBody>
         <div className="flex flex-col gap-2">
@@ -69,6 +83,7 @@ const LinkFormModal: React.FC<LinkFormModalProps> = ({
           <div className="flex flex-col gap-2 place-items-start">
             <Field name="Your Long URL" isRequired />
             <TextField
+              disabled={isEditMode}
               iconBefore={
                 <span className="text-success-regular pointer-events-none border-r-2 pr-3">
                   https://
@@ -90,7 +105,7 @@ const LinkFormModal: React.FC<LinkFormModalProps> = ({
         <div className="flex justify-end gap-4">
           <Button onClick={handleCloseModal}>Discard</Button>
           <Button appearance="primary" bolded onClick={handleSubmit}>
-            Shorten URL
+            {isEditMode ? "Update" : "Shorten URL"}
           </Button>
         </div>
       </ModalFooter>
