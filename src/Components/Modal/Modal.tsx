@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import ReactDOM from "react-dom";
-import { cn } from "../../Utils/helpers";
+import { cn } from "../../utils/helpers";
 import { ClassValue } from "clsx";
 
 // types

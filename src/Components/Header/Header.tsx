@@ -1,8 +1,8 @@
 import { NavLink, useNavigate, To } from "react-router-dom";
-import { cn } from "../../Utils/helpers";
+import { cn } from "../../utils/helpers";
 import Brand from "../Brand/Brand";
 import Button from "../Button/Button";
-import { PATH_CONSTANTS } from "../../Routes/pathConstants";
+import { PATH_CONSTANTS } from "../../routes/pathConstants";
 import UserMenu from "../Menu/UserMenu";
 import useAuth from "../../hooks/useAuth";
 

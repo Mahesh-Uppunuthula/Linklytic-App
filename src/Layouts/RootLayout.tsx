@@ -1,8 +1,8 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import Footer from "../Components/Footer/Footer";
-import Header from "../Components/Header/Header";
+import Footer from "../components/Footer/Footer";
+import Header from "../components/Header/Header";
 import { Suspense, useEffect } from "react";
-import { PATH_CONSTANTS } from "../Routes/pathConstants";
+import { PATH_CONSTANTS } from "../routes/pathConstants";
 import useAuth from "../hooks/useAuth";
 
 function RootLayout() {

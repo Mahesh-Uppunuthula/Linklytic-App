@@ -3,7 +3,7 @@ import {
   Link as ReactRouterLink,
   LinkProps as ReactRouterLinkProps,
 } from "react-router-dom";
-import { cn } from "../../Utils/helpers";
+import { cn } from "../../utils/helpers";
 
 interface LinkProps extends ReactRouterLinkProps {
   children: ReactNode;

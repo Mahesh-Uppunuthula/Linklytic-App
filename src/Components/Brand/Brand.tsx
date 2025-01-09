@@ -1,6 +1,6 @@
 import { FiLink } from "react-icons/fi";
 import Link from "../Button/Link";
-import { PATH_CONSTANTS } from "../../Routes/pathConstants";
+import { PATH_CONSTANTS } from "../../routes/pathConstants";
 import useAuth from "../../hooks/useAuth";
 import { useLocation } from "react-router-dom";
 type BrandProps = {

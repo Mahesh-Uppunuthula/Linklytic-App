@@ -1,7 +1,7 @@
 import { FiMinus } from "react-icons/fi";
-import Brand from "../../Components/Brand/Brand";
-import Link from "../../Components/Button/Link";
-import Button from "../../Components/Button/Button";
+import Brand from "../../components/Brand/Brand";
+import Link from "../../components/Button/Link";
+import Button from "../../components/Button/Button";
 import { GoArrowLeft } from "react-icons/go";
 
 function Page404() {

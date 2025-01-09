@@ -1,13 +1,13 @@
 import { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { RootRoutes, AuthRoutes, AppRoutes } from "./Routes";
-import RootLayout from "./Layouts/RootLayout";
-import AuthLayout from "./Layouts/AuthLayout";
-import AppLayout from "./Layouts/AppLayout";
+import { RootRoutes, AuthRoutes, AppRoutes } from "./routes";
+import RootLayout from "./layouts/RootLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import AppLayout from "./layouts/AppLayout";
 import { AuthProvider } from "./context/AuthContext";
-import Error from "./Pages/Errors/Error";
-const Page404 = lazy(() => import("./Pages/Errors/Page404"));
+import Error from "./pages/Errors/Error";
+const Page404 = lazy(() => import("./pages/Errors/Page404"));
 
 export default function App() {
   const router = createBrowserRouter([
@@ -36,9 +36,9 @@ export default function App() {
   ]);
   return (
     <>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
     </>
   );
 }

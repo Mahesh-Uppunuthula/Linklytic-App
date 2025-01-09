@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { PATH_CONSTANTS } from "../Routes/pathConstants";
+import { PATH_CONSTANTS } from "../routes/pathConstants";
 import useAuth from "../hooks/useAuth";
 import { useEffect } from "react";
 

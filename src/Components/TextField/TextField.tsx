@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useRef, useState } from "react";
-import { cn } from "../../Utils/helpers";
+import { cn } from "../../utils/helpers";
 import { IoIosInformationCircle } from "react-icons/io";
-import { Appearance, StrOrNum } from "../../Types/global";
+import { Appearance, StrOrNum } from "../../types/global";
 import { EMAIL_REGEX, URL_REGEX } from "../../constants";
 
 interface TextField

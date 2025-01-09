@@ -1,10 +1,10 @@
 import React from "react";
-import HeroSection from "../Components/Section/HeroSection";
+import HeroSection from "../components/Section/HeroSection";
 
 interface SectionProps {
   key: string;
   name: string;
-  Section: React.FC<any>;
+  Section: React.FC<unknown>;
 }
 const SECTIONS: SectionProps[] = [
   {

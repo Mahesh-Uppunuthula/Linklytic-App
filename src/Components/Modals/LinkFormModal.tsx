@@ -7,7 +7,7 @@ import Modal, {
 import Button from "../Button/Button";
 import TextField from "../TextField/TextField";
 import Field from "../Field/Field";
-import { CreateLinkInput } from "../../Pages/Dashboard";
+import { CreateLinkInput } from "../../pages/Dashboard";
 import { useState } from "react";
 
 type LinkFormModalPropsCreateMode = {

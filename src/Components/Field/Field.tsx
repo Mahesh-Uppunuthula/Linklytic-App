@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { cn } from "../../Utils/helpers";
+import { cn } from "../../utils/helpers";
 
 type FieldType = {
   className?: string;

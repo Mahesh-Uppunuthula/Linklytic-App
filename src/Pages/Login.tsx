@@ -1,11 +1,11 @@
 import { useState } from "react";
-import Button from "../Components/Button/Button";
-import TextField from "../Components/TextField/TextField";
-import Field from "../Components/Field/Field";
-import Brand from "../Components/Brand/Brand";
-import Link from "../Components/Button/Link";
+import Button from "../components/Button/Button";
+import TextField from "../components/TextField/TextField";
+import Field from "../components/Field/Field";
+import Brand from "../components/Brand/Brand";
+import Link from "../components/Button/Link";
 import { useNavigate } from "react-router-dom";
-import { PATH_CONSTANTS } from "../Routes/pathConstants";
+import { PATH_CONSTANTS } from "../routes/pathConstants";
 import useAuth from "../hooks/useAuth";
 
 const FIELDS = {

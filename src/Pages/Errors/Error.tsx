@@ -1,9 +1,9 @@
 import { VscDebugDisconnect } from "react-icons/vsc";
-import Brand from "../../Components/Brand/Brand";
-import Button from "../../Components/Button/Button";
+import Brand from "../../components/Brand/Brand";
+import Button from "../../components/Button/Button";
 import { IoReload } from "react-icons/io5";
-import Link from "../../Components/Button/Link";
-import { PATH_CONSTANTS } from "../../Routes/pathConstants";
+import Link from "../../components/Button/Link";
+import { PATH_CONSTANTS } from "../../routes/pathConstants";
 import { BiSupport } from "react-icons/bi";
 
 const Error = () => {

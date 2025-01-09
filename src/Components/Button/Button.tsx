@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { cn } from "../../Utils/helpers";
-import { Appearance } from "../../Types/global";
+import { cn } from "../../utils/helpers";
+import { Appearance } from "../../types/global";
 
 type ButtonSize = "small" | "medium" | "large";
 type Variants = "soft" | "solid" | "outlined" | "text";

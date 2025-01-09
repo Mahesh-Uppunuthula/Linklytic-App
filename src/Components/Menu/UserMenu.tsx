@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import { PATH_CONSTANTS } from "../../Routes/pathConstants";
+import { PATH_CONSTANTS } from "../../routes/pathConstants";
 
 const UserMenu = () => {
   const { logout } = useAuth();
