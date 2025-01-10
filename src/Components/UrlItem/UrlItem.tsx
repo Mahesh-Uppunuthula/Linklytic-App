@@ -1,7 +1,6 @@
-import React, { ComponentPropsWithRef } from "react";
-import { LOCAL_APP_BASE_URL } from "../../constants";
+import React, { ComponentPropsWithRef, useState } from "react";
 import Button from "../Button/Button";
-import { TbLocation } from "react-icons/tb";
+import { TbCopy, TbCopyCheck, TbLocation } from "react-icons/tb";
 import { AiOutlineEdit } from "react-icons/ai";
 import Link from "../Button/Link";
 
@@ -24,7 +23,22 @@ const UrlItem: React.FC<UrlItem> = ({
   lastModified,
   onAction = () => {},
 }) => {
-  const shortUrl = `${LOCAL_APP_BASE_URL}/${shortenedUrlId}`;
+  const shortUrl = `${
+    import.meta.env.VITE_LOCAL_API_BASE_URL
+  }/${shortenedUrlId}`;
+
+  const [isContentCopied, setIsContentCopied] = useState(false);
+
+  const handleCopyClick = async () => {
+    if (isContentCopied) return;
+    setTimeout(() => {
+      setIsContentCopied(false);
+    }, 3000);
+    await navigator.clipboard.writeText(shortUrl).then((value) => {
+      console.log({ value });
+      setIsContentCopied(true);
+    });
+  };
   return (
     <div className="w-full h-fit flex flex-col gap-1 justify-start p-3 rounded-md border border-gray-200 shadow-md hover:shadow-lg hover:border-primary-regular hover:duration-500 ">
       <div className="p-2">
@@ -32,10 +46,18 @@ const UrlItem: React.FC<UrlItem> = ({
         <div className="flex justify-between place-items-center flex-nowrap gap-2">
           <div className="flex gap-1 justify-start place-items-center">
             <span
-              title="click to copy to clipboard"
-              className="font-medium text-primary-regular cursor-pointer"
+              title={isContentCopied ? "Copied" : "Copy Link"}
+              className="font-medium text-primary-regular cursor-pointer flex gap-1 place-items-center group"
+              onClick={handleCopyClick}
             >
-              Short.Link
+              <span className="group-hover:block hidden">
+                {isContentCopied ? (
+                  <TbCopyCheck size={15} />
+                ) : (
+                  <TbCopy size={15} />
+                )}
+              </span>
+              <span>Short.Link</span>
             </span>
             <span className="text-sm text-neutral-400">or</span>
             <span className="font-medium text-neutral-800">{name}</span>
