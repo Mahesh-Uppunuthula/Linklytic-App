@@ -111,11 +111,14 @@ function TextField({
           );
           break;
         case "url":
-          _isValid = !!URL_REGEX.test(value);
-          console.log("URL", { value, _isValid });
-          inputFieldRef.current?.setCustomValidity(
-            _isValid ? "" : "Invalid URL"
-          );
+          {
+            // optional (http:// or https://), optional www
+            const urlRegex = new RegExp(URL_REGEX, "i"); // i -> case-insensitive
+            _isValid = urlRegex.test(value);
+            inputFieldRef.current?.setCustomValidity(
+              _isValid ? "" : "Invalid URL"
+            );
+          }
           break;
 
         default:
@@ -147,7 +150,7 @@ function TextField({
             value={value}
             tabIndex={0}
             className={inputClassNames}
-            type={type}
+            type={type === "url" ? "string" : type}
             onChange={handleOnChange}
           />
           {isInvalid || isInputInvalid ? (
