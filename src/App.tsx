@@ -7,9 +7,11 @@ import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
 import { AuthProvider } from "./context/AuthContext";
 import Error from "./pages/Errors/Error";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const Page404 = lazy(() => import("./pages/Errors/Page404"));
 
 export default function App() {
+  const queryClient = new QueryClient();
   const router = createBrowserRouter([
     {
       path: "/",
@@ -36,9 +38,11 @@ export default function App() {
   ]);
   return (
     <>
+      <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <RouterProvider router={router} />
         </AuthProvider>
+      </QueryClientProvider>
     </>
   );
 }
