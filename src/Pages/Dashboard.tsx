@@ -1,16 +1,16 @@
-import { Fragment, useReducer, useState } from "react";
-import Button from "../Components/Button/Button";
-// import { cn } from "../Utils/helpers";
-import LinkFormModal from "../Components/Modals/LinkFormModal";
-import UrlItem, { URL_ITEM_ACTIONS } from "../Components/UrlItem/UrlItem";
+import { Fragment, useState } from "react";
+import Button from "../components/Button/Button";
+import LinkFormModal from "../components/Modals/LinkFormModal";
+import UrlItem, { URL_ITEM_ACTIONS } from "../components/UrlItem/UrlItem";
+import { useUrlMutation, useUrls } from "../hooks/useUrls";
 
 // type LinkStatusType = "ACTIVE" | "EXPIRED" | "DISABLED";
 
-type Link = {
+export type Link = {
   _id: string;
   name: string;
   longURL: string;
-  shortenedURL: string;
+  shortUrlID: string;
   createdAt: string;
   updatedAt: string;
   // expiresAt: string;
@@ -23,48 +23,54 @@ export type CreateLinkInput = {
   longURL: string;
 };
 
-const Headers = [
-  { key: "item-no", label: "#" },
-  { key: "name", label: "Name" },
-  { key: "longURL", label: "Original Link" },
-  { key: "shortenedURL", label: "Shortened Link" },
-  { key: "createdAt", label: "Created" },
-  { key: "updatedAt", label: "Last Modified" },
-  { key: "edit", label: "Edit" },
-  { key: "delete", label: "Delete" },
-];
+// const Headers = [
+//   { key: "item-no", label: "#" },
+//   { key: "name", label: "Name" },
+//   { key: "longURL", label: "Original Link" },
+//   { key: "shortenedURL", label: "Shortened Link" },
+//   { key: "createdAt", label: "Created" },
+//   { key: "updatedAt", label: "Last Modified" },
+//   { key: "edit", label: "Edit" },
+//   { key: "delete", label: "Delete" },
+// ];
 
-const dummyLinks: Link[] = [
-  {
-    _id: "Insta link 1",
-    name: "Insta link",
-    longURL: "original link",
-    shortenedURL: "shortened link",
-    createdAt: "23 Dec, 2024",
-    updatedAt: "25 Dec, 2024",
-  },
-  {
-    _id: "Insta link 2",
-    name: "Insta link 2",
-    longURL: "original link 2",
-    shortenedURL: "shortened link 2",
-    createdAt: "24 Dec, 2024",
-    updatedAt: "25 Dec, 2024",
-  },
-  {
-    _id: "Insta link 3",
-    name: "Insta link 3",
-    longURL: "original link 3",
-    shortenedURL: "shortened link 3",
-    createdAt: "24 Dec, 2024",
-    updatedAt: "25 Dec, 2024",
-  },
-];
+// const dummyLinks: Link[] = [
+//   {
+//     _id: "Insta link 1",
+//     name: "Insta link",
+//     longURL: "original link",
+//     shortenedURL: "shortened link",
+//     createdAt: "23 Dec, 2024",
+//     updatedAt: "25 Dec, 2024",
+//   },
+//   {
+//     _id: "Insta link 2",
+//     name: "Insta link 2",
+//     longURL: "original link 2",
+//     shortenedURL: "shortened link 2",
+//     createdAt: "24 Dec, 2024",
+//     updatedAt: "25 Dec, 2024",
+//   },
+//   {
+//     _id: "Insta link 3",
+//     name: "Insta link 3",
+//     longURL: "original link 3",
+//     shortenedURL: "shortened link 3",
+//     createdAt: "24 Dec, 2024",
+//     updatedAt: "25 Dec, 2024",
+//   },
+// ];
 
 export type CREATE_LINK = "create-link";
 export type UPDATE_LINK = "update-link";
 export type DELETE_LINK = "delete-link";
-export type LinkActions = CREATE_LINK | UPDATE_LINK | DELETE_LINK;
+export type POPULATE_LINKS = "populate-links";
+export type LinkActions =
+  | CREATE_LINK
+  | UPDATE_LINK
+  | DELETE_LINK
+  | POPULATE_LINKS;
+
 export type AddLinkDispatch = {
   type: CREATE_LINK;
   payload: { link: CreateLinkInput };
@@ -77,50 +83,75 @@ export type DeleteLinkDispatch = {
   type: DELETE_LINK;
   payload: { id: number };
 };
+export type PopulateLinksDispatch = {
+  type: POPULATE_LINKS;
+  payload: { links: Link[] };
+};
 export type LinkReducerDispatch =
   | AddLinkDispatch
   | UpdateLinkDispatch
-  | DeleteLinkDispatch;
-function linkReducer(links: Link[], action: LinkReducerDispatch) {
-  const { type, payload } = action;
-  console.log({ links, action, payload });
+  | DeleteLinkDispatch
+  | PopulateLinksDispatch;
 
-  switch (type) {
-    case "create-link": {
-      console.log("create-link");
-      const newLink = createLink(payload.link);
-      return [...links, newLink];
-    }
-    case "delete-link":
-      return links;
-    // updatedLink();
-    case "update-link":
-      return links;
-    // deleteLink();
+// function linkReducer(links: Link[], action: LinkReducerDispatch) {
+//   const { type, payload } = action;
+//   console.log({ links, action, payload });
 
-    default:
-      return links;
-  }
-}
+//   switch (type) {
+//     case "create-link": {
+//       console.log("create-link");
+//       const newLink = createLink(payload.link);
+//       return [...links, newLink];
+//     }
+//     case "delete-link":
+//       return links;
+//     // updatedLink();
+//     case "update-link":
+//       return links;
+//     // deleteLink();
+//     case "populate-links":
+//       return payload.links;
 
-function createLink(link: CreateLinkInput): Link {
-  return {
-    _id: `id-${link.name}`,
-    name: link.name,
-    longURL: link.longURL,
-    createdAt: Date.now().toString(),
-    updatedAt: Date.now().toString(),
-    shortenedURL: `${link.name}-shortened`,
-  };
-}
+//     default:
+//       return links;
+//   }
+// }
+
+// function createLink(link: CreateLinkInput): Link {
+//   return {
+//     _id: `id-${link.name}`,
+//     name: link.name,
+//     longURL: link.longURL,
+//     createdAt: Date.now().toString(),
+//     updatedAt: Date.now().toString(),
+//     shortenedURL: `${link.name}-shortened`,
+//   };
+// }
+
+/**
+ *
+ * TODO
+ *
+ * - Create env variable for setting the base url for axios
+ * - Create API folder for handling all the api calls
+ * - Create useLinks hook which gives {isLoading, isPending, data, error ...} = useLinks();
+ */
 
 function Dashboard() {
-  const [links, dispatch] = useReducer(linkReducer, [...dummyLinks]);
-  const [isCreateMode, setIsCreateMode] = useState(false);
   const [isCreateOrUpdateLinkModalOpen, setIsCreateOrUpdateLinkModalOpen] =
     useState(false);
-
   const [editUrlId, setEditUrlId] = useState("");
+
+  const { isPending, isFetched, error, data: userUrlsData } = useUrls();
+  const {
+    data: creatUrlResponse,
+    mutate: createUrl,
+    isSuccess: isCreationSuccessfull,
+    isPending: isCreationPending,
+    error: creationError,
+  } = useUrlMutation();
+
+  const links = isFetched ? userUrlsData?.data.links : [];
 
   const closeAddLinkModal = () => {
     setEditUrlId("");
@@ -141,22 +172,33 @@ function Dashboard() {
     }
   };
 
+  const handleCreateOrUpdate = (link: CreateLinkInput) => {
+    console.log({ link });
+    createUrl({ name: link.name, longUrl: link.longURL });
+  };
+
+  // add a page loader
+  if (isPending || isCreationPending)
+    return (
+      <div className="w-full h-full flex justify-center place-items-center text-neutral-400">
+        Loading...
+      </div>
+    );
+
+  if (error || creationError)
+    return <div>{`error has occurred ${error || creationError}`}</div>;
+
   return (
     <Fragment>
       {isCreateOrUpdateLinkModalOpen && (
         <LinkFormModal
           isEditMode={editUrlId.trim().length > 0}
           link={
-            links.find((link) => link._id === editUrlId) ??
+            links?.find((link: Link) => link._id === editUrlId) ??
             ({ name: "", longURL: "" } as CreateLinkInput)
           }
           closeModal={closeAddLinkModal}
-          submitLink={(link) =>
-            dispatch({
-              type: isCreateMode ? "create-link" : "update-link",
-              payload: { link },
-            })
-          }
+          submitLink={handleCreateOrUpdate}
         />
       )}
       {/* Dashboard Page Container */}
@@ -168,59 +210,21 @@ function Dashboard() {
             appearance="primary"
             bolded
             onClick={() => {
-              setIsCreateMode(true);
               setIsCreateOrUpdateLinkModalOpen(true);
             }}
           >
             Create Short URL
           </Button>
         </div>
-        {/* Links Table */}
-        {/* <div className="w-full my-3 p-2">
-          <table className="w-full ">
-            <thead>
-              <tr>
-                {Headers.map(({ key, label }) => (
-                  <th
-                    key={key}
-                    className="text-start text-gray-400 font-medium border border-gray-200 p-1"
-                  >
-                    {label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {links.map((link, rowIndex) => (
-                <tr key={`link-${rowIndex}`}>
-                  {Headers.map(({ key }, columnIndex) => (
-                    <td
-                      key={`cell-${rowIndex}${columnIndex}`}
-                      className={cn(
-                        `border border-gray-200 p-1`,
-                        rowIndex % 2 !== 0 ? "bg-default-light" : "bg-white"
-                      )}
-                    >
-                      {key === "item-no"
-                        ? rowIndex + 1
-                        : link[key as keyof Link]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div> */}
-
         <div className="w-full h-full my-5 grid grid-cols-2 gap-4">
-          {links.map((link) => (
+          {links?.map((link: Link) => (
             <UrlItem
               key={link._id}
               id={link._id}
               name={link.name}
               longUrl={link.longURL}
               lastModified={link.updatedAt}
-              shortenedUrlId={link.shortenedURL}
+              shortenedUrlId={link.shortUrlID}
               onAction={handleUrlItemAction}
             />
           ))}
