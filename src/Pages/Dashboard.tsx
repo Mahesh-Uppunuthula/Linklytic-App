@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import Button from "../components/Button/Button";
 import LinkFormModal from "../components/Modals/LinkFormModal";
 import UrlItem, { URL_ITEM_ACTIONS } from "../components/UrlItem/UrlItem";
-import { useUrlMutation, useUrls } from "../hooks/useUrls";
+import { useUrlMutation, useUrls, useUrlUpdate } from "../hooks/useUrls";
 
 // type LinkStatusType = "ACTIVE" | "EXPIRED" | "DISABLED";
 
@@ -151,6 +151,13 @@ function Dashboard() {
     error: creationError,
   } = useUrlMutation();
 
+  const {
+    data: updateUrlResponse,
+    mutate: updateUrl,
+    isPending: isUpdateUrlPending,
+    error: updationError,
+  } = useUrlUpdate();
+
   const links = isFetched ? userUrlsData?.data.links : [];
 
   const closeAddLinkModal = () => {
@@ -174,7 +181,11 @@ function Dashboard() {
 
   const handleCreateOrUpdate = (link: CreateLinkInput) => {
     console.log({ link });
-    createUrl({ name: link.name, longUrl: link.longURL });
+    if (editUrlId.trim().length) {
+      updateUrl({ id: editUrlId, name: link.name });
+    } else {
+      createUrl({ name: link.name, longUrl: link.longURL });
+    }
   };
 
   // add a page loader
