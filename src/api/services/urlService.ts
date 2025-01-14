@@ -68,3 +68,29 @@ export const createUserUrl = async ({
   };
   return result;
 };
+
+export const updateUserUrl = async ({
+  id,
+  name,
+}: {
+  id: string;
+  name: string;
+}): Promise<TCreateUserUrlResponse> => {
+  const response = await axiosInstance.put(`/urls/${id}`, {
+    name,
+  });
+  const data: TCreateUserUrlResponse = response.data;
+  const result: TCreateUserUrlResponse = {
+    data: {
+      link: {
+        _id: data.data.link._id,
+        name: data.data.link.name,
+        longURL: data.data.link.longURL,
+        shortUrlID: data.data.link.shortUrlID,
+        createdAt: data.data.link.createdAt,
+        updatedAt: data.data.link.updatedAt,
+      },
+    },
+  };
+  return result;
+};
