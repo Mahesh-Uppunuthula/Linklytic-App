@@ -2,7 +2,12 @@ import { Fragment, useState } from "react";
 import Button from "../components/Button/Button";
 import LinkFormModal from "../components/Modals/LinkFormModal";
 import UrlItem, { URL_ITEM_ACTIONS } from "../components/UrlItem/UrlItem";
-import { useUrlMutation, useUrls, useUrlUpdate } from "../hooks/useUrls";
+import {
+  useDeleteUrl,
+  useUrlMutation,
+  useUrls,
+  useUrlUpdate,
+} from "../hooks/useUrls";
 
 // type LinkStatusType = "ACTIVE" | "EXPIRED" | "DISABLED";
 
@@ -144,19 +149,18 @@ function Dashboard() {
 
   const { isPending, isFetched, error, data: userUrlsData } = useUrls();
   const {
-    data: creatUrlResponse,
     mutate: createUrl,
-    isSuccess: isCreationSuccessfull,
     isPending: isCreationPending,
     error: creationError,
   } = useUrlMutation();
 
+  const { mutate: updateUrl, error: updationError } = useUrlUpdate();
+
   const {
-    data: updateUrlResponse,
-    mutate: updateUrl,
-    isPending: isUpdateUrlPending,
-    error: updationError,
-  } = useUrlUpdate();
+    mutate: deleteUserUrl,
+    isPending: isDeletionPending,
+    error: deletionError,
+  } = useDeleteUrl();
 
   const links = isFetched ? userUrlsData?.data.links : [];
 
@@ -168,10 +172,11 @@ function Dashboard() {
   const handleUrlItemAction = (action: URL_ITEM_ACTIONS, id: string) => {
     switch (action) {
       case "edit-url":
-        {
-          setEditUrlId(id);
-          setIsCreateOrUpdateLinkModalOpen(true);
-        }
+        setEditUrlId(id);
+        setIsCreateOrUpdateLinkModalOpen(true);
+        break;
+      case "delete-url":
+        deleteUserUrl({ id });
         break;
 
       default:
@@ -189,15 +194,19 @@ function Dashboard() {
   };
 
   // add a page loader
-  if (isPending || isCreationPending)
+  if (isPending || isCreationPending || isDeletionPending)
     return (
       <div className="w-full h-full flex justify-center place-items-center text-neutral-400">
         Loading...
       </div>
     );
 
-  if (error || creationError)
-    return <div>{`error has occurred ${error || creationError}`}</div>;
+  if (error || creationError || updationError || deletionError)
+    return (
+      <div>{`error has occurred ${
+        error || creationError || updationError || deletionError
+      }`}</div>
+    );
 
   return (
     <Fragment>

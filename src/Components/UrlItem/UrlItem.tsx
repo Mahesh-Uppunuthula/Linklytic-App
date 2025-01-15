@@ -1,10 +1,10 @@
 import React, { ComponentPropsWithRef, useState } from "react";
 import Button from "../Button/Button";
 import { TbCopy, TbCopyCheck, TbLocation } from "react-icons/tb";
-import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import Link from "../Button/Link";
 
-export type URL_ITEM_ACTIONS = "edit-url";
+export type URL_ITEM_ACTIONS = "edit-url" | "delete-url";
 
 type UrlItem = ComponentPropsWithRef<"div"> & {
   id: string;
@@ -71,6 +71,14 @@ const UrlItem: React.FC<UrlItem> = ({
               onClick={() => onAction("edit-url", id)}
             >
               <AiOutlineEdit size={19} />
+            </Button>
+            <Button
+              appearance="primary"
+              variant="soft"
+              title="Delete Link"
+              onClick={() => onAction("delete-url", id)}
+            >
+              <AiOutlineDelete size={19} />
             </Button>
             <Link to={shortUrl} target="_blank" rel="noopener noreferrer">
               <Button appearance="primary" variant="soft" title="Visit Link">
