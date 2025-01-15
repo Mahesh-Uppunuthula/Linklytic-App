@@ -48,25 +48,19 @@ export const createUserUrl = async ({
 }: {
   name: string;
   longUrl: string;
-}): Promise<TCreateUserUrlResponse> => {
-  const response = await axiosInstance.post("/urls", {
-    name,
-    longUrl,
-  });
-  const data: TCreateUserUrlResponse = response.data;
-  const result: TCreateUserUrlResponse = {
-    data: {
-      link: {
-        _id: data.data.link._id,
-        name: data.data.link.name,
-        longURL: data.data.link.longURL,
-        shortUrlID: data.data.link.shortUrlID,
-        createdAt: data.data.link.createdAt,
-        updatedAt: data.data.link.updatedAt,
-      },
-    },
-  };
-  return result;
+}): Promise<void> => {
+  try {
+    const response = await axiosInstance.post("/urls", {
+      name,
+      longUrl,
+    });
+    if (response.status !== 201) {
+      throw new Error(response.data?.message);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const updateUserUrl = async ({
@@ -75,22 +69,45 @@ export const updateUserUrl = async ({
 }: {
   id: string;
   name: string;
-}): Promise<TCreateUserUrlResponse> => {
-  const response = await axiosInstance.put(`/urls/${id}`, {
-    name,
-  });
-  const data: TCreateUserUrlResponse = response.data;
-  const result: TCreateUserUrlResponse = {
-    data: {
-      link: {
-        _id: data.data.link._id,
-        name: data.data.link.name,
-        longURL: data.data.link.longURL,
-        shortUrlID: data.data.link.shortUrlID,
-        createdAt: data.data.link.createdAt,
-        updatedAt: data.data.link.updatedAt,
-      },
-    },
-  };
-  return result;
+}): Promise<void> => {
+  // const response = await axiosInstance.put(`/urls/${id}`, {
+  //   name,
+  // });
+  // const data: TCreateUserUrlResponse = response.data;
+  // const result: TCreateUserUrlResponse = {
+  //   data: {
+  //     link: {
+  //       _id: data.data.link._id,
+  //       name: data.data.link.name,
+  //       longURL: data.data.link.longURL,
+  //       shortUrlID: data.data.link.shortUrlID,
+  //       createdAt: data.data.link.createdAt,
+  //       updatedAt: data.data.link.updatedAt,
+  //     },
+  //   },
+  // };
+  try {
+    const response = await axiosInstance.put(`/urls/${id}`, {
+      name,
+    });
+    if (response.status !== 204) {
+      throw new Error(response.data?.message);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const deleteUserUrl = async ({ id }: { id: string }): Promise<void> => {
+  try {
+    const response = await axiosInstance.delete(`/urls/${id}`);
+    if (response.status !== 204) {
+      throw new Error(response.data?.message);
+    }
+    return;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
