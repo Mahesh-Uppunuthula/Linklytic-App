@@ -22,7 +22,7 @@ export const useUrls = () => {
   });
 };
 
-export const useUrlMutation = () => {
+export const useCreateUrl = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [QUERY_KEYS.createUserUrl],
@@ -32,7 +32,7 @@ export const useUrlMutation = () => {
   });
 };
 
-export const useUrlUpdate = () => {
+export const useUpdateUrl = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [QUERY_KEYS.updateUserUrl],

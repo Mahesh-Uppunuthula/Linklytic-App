@@ -31,7 +31,7 @@ export const fetchUserUrls = async (): Promise<TUserUrlsResponse> => {
         (link) => ({
           _id: link._id,
           name: link.name,
-          longURL: link.longUrl,
+          longUrl: link.longUrl,
           shortUrlID: link.shortUrlId,
           createdAt: link.createdAt,
           updatedAt: link.updatedAt,

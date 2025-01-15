@@ -4,7 +4,20 @@ import { TbCopy, TbCopyCheck, TbLocation } from "react-icons/tb";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import Link from "../Button/Link";
 
-export type URL_ITEM_ACTIONS = "edit-url" | "delete-url";
+type TEditAction = {
+  type: "edit";
+  payload: {
+    id: string;
+  };
+};
+type TDeleteAction = {
+  type: "delete";
+  payload: {
+    id: string;
+  };
+};
+
+export type TUrlAction = TEditAction | TDeleteAction;
 
 type UrlItem = ComponentPropsWithRef<"div"> & {
   id: string;
@@ -12,7 +25,7 @@ type UrlItem = ComponentPropsWithRef<"div"> & {
   shortenedUrlId: string;
   longUrl: string;
   lastModified: string;
-  onAction: (action: URL_ITEM_ACTIONS, id: string) => void;
+  onAction: (action: TUrlAction) => void;
 };
 
 const UrlItem: React.FC<UrlItem> = ({
@@ -68,7 +81,7 @@ const UrlItem: React.FC<UrlItem> = ({
               appearance="primary"
               variant="soft"
               title="Edit Link"
-              onClick={() => onAction("edit-url", id)}
+              onClick={() => onAction({ type: "edit", payload: { id: id } })}
             >
               <AiOutlineEdit size={19} />
             </Button>
@@ -76,7 +89,14 @@ const UrlItem: React.FC<UrlItem> = ({
               appearance="primary"
               variant="soft"
               title="Delete Link"
-              onClick={() => onAction("delete-url", id)}
+              onClick={() =>
+                onAction({
+                  type: "delete",
+                  payload: {
+                    id: id,
+                  },
+                })
+              }
             >
               <AiOutlineDelete size={19} />
             </Button>

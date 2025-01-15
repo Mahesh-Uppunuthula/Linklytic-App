@@ -7,52 +7,50 @@ import Modal, {
 import Button from "../Button/Button";
 import TextField from "../TextField/TextField";
 import Field from "../Field/Field";
-import { CreateLinkInput } from "../../pages/Dashboard";
+import { TLinkBase } from "../../pages/Dashboard";
 import { useState } from "react";
 
-type LinkFormModalPropsCreateMode = {
-  isEditMode: false;
-};
-type LinkFormModalPropsEditMode = {
-  isEditMode: true;
-  link: CreateLinkInput;
-};
+type TCreateLinkInput = TLinkBase;
+type TEditLinkInput = Pick<TLinkBase, "name">;
+
+export type TLinkFormSubmitData = TCreateLinkInput | TEditLinkInput;
 
 type LinkFormModalProps = {
-  submitLink: (link: CreateLinkInput) => void;
+  isEditMode: boolean;
+  link: TLinkBase | undefined;
+  submitLink: (link: TLinkFormSubmitData) => void;
   closeModal: () => void;
-} & (LinkFormModalPropsCreateMode | LinkFormModalPropsEditMode);
+} & (
+  | { isEditMode: true; submitLink: (link: TEditLinkInput) => void }
+  | { isEditMode: false; submitLink: (link: TCreateLinkInput) => void }
+);
 
-type CreateLinkFormFields = keyof CreateLinkInput;
-type CreateLinkFormFieldsType = CreateLinkInput[keyof CreateLinkInput];
+type CreateLinkFormFields = keyof TCreateLinkInput;
+type CreateLinkFormFieldsType = TCreateLinkInput[keyof TCreateLinkInput];
 
 const LinkFormModal: React.FC<LinkFormModalProps> = ({
   isEditMode,
+  link,
   submitLink,
   closeModal,
-  ...props
 }) => {
-  const [createLinkForm, setCreateLinkForm] = useState<CreateLinkInput>(
-    isEditMode && "link" in props
-      ? props.link
-      : {
-          name: "",
-          longURL: "",
-        }
-  );
+  const [createLinkForm, setCreateLinkForm] = useState<TLinkBase>({
+    name: link?.name ?? "",
+    longUrl: link?.longUrl ?? "",
+  });
 
   const handleOnChangeFormData = (
     field: CreateLinkFormFields,
     value: CreateLinkFormFieldsType
   ) => {
-    setCreateLinkForm((prevFormData: CreateLinkInput) => ({
+    setCreateLinkForm((prevFormData: TCreateLinkInput) => ({
       ...prevFormData,
       [field]: value,
     }));
   };
 
   function handleCloseModal() {
-    setCreateLinkForm({ name: "", longURL: "" });
+    setCreateLinkForm({ name: "", longUrl: "" });
     closeModal();
   }
 
@@ -92,9 +90,9 @@ const LinkFormModal: React.FC<LinkFormModalProps> = ({
               type="url"
               placeholder="super-long-url.com/shorten-it"
               autoCorrect="off"
-              value={createLinkForm.longURL}
+              value={createLinkForm.longUrl}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                handleOnChangeFormData("longURL", event.target.value);
+                handleOnChangeFormData("longUrl", event.target.value);
               }}
               // errorMessage="Enter valid URL"
             />
