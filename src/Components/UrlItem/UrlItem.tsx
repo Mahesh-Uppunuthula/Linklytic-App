@@ -37,7 +37,7 @@ const UrlItem: React.FC<UrlItem> = ({
   onAction = () => {},
 }) => {
   const shortUrl = `${
-    import.meta.env.VITE_LOCAL_API_BASE_URL
+    import.meta.env.VITE_LOCAL_SERVER_DOMAIN
   }/${shortenedUrlId}`;
 
   const [isContentCopied, setIsContentCopied] = useState(false);
