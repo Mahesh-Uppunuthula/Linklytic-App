@@ -1,4 +1,4 @@
-export type StrOrNum = string | number ;
+export type StrOrNum = string | number;
 export type Appearance =
   | "primary"
   | "warning"
@@ -6,3 +6,8 @@ export type Appearance =
   | "discovery"
   | "default"
   | "success";
+
+export type TLinkBase = {
+  name: string;
+  longUrl: string;
+};

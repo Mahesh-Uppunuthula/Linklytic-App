@@ -7,8 +7,8 @@ import Modal, {
 import Button from "../Button/Button";
 import TextField from "../TextField/TextField";
 import Field from "../Field/Field";
-import { TLinkBase } from "../../pages/Dashboard";
 import { useState } from "react";
+import { TLinkBase } from "../../types/global";
 
 type TCreateLinkInput = TLinkBase;
 type TEditLinkInput = Pick<TLinkBase, "name">;

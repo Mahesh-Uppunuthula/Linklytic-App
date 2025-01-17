@@ -10,11 +10,7 @@ import {
   useUpdateUrl,
   useUrls,
 } from "../hooks/useUrls";
-
-export type TLinkBase = {
-  name: string;
-  longUrl: string;
-};
+import { TLinkBase } from "../types/global";
 
 // type LinkStatusType = "ACTIVE" | "EXPIRED" | "DISABLED";
 
