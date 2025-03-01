@@ -36,7 +36,7 @@ function Login() {
     loginUser();
   };
 
-  const handleOnChange = (field: string, value: String) => {
+  const handleOnChange = (field: string, value: string) => {
     setFormData((prevState) => ({
       ...prevState,
       [field]: value,
