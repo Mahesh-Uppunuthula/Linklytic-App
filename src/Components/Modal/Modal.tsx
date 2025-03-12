@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { cn } from "../../utils/helpers";
 import { ClassValue } from "clsx";
@@ -58,6 +58,25 @@ const Modal: React.FC<ModalType> = ({
   onClose = () => {},
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const windowListenerAbortController = new AbortController();
+    window.addEventListener(
+      "keydown",
+      (event: KeyboardEvent) => {
+        if (event.code === "Escape") {
+          onClose();
+        }
+      },
+      {
+        signal: windowListenerAbortController.signal,
+      }
+    );
+
+    return () => {
+      windowListenerAbortController.abort();
+    };
+  }, [onClose]);
 
   const handleOnClickOverlay = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
