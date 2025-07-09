@@ -1,9 +1,9 @@
 import { Fragment, useState } from "react";
-import Button from "../components/Button/Button";
+import Button from "@components/ui/Button/Button";
 import LinkFormModal, {
   TLinkFormSubmitData,
-} from "../components/Modals/LinkFormModal";
-import UrlItem, { TUrlAction } from "../components/UrlItem/UrlItem";
+} from "../components/modals/LinkFormModal";
+import UrlItem, { TUrlAction } from "../components/data/UrlItem/UrlItem";
 import {
   useCreateUrl,
   useDeleteUrl,
@@ -11,6 +11,7 @@ import {
   useUrls,
 } from "../hooks/useUrls";
 import { TLinkBase } from "../types/global";
+import DetailedLoader from "../components/ui/Loader/DetailedLoader";
 
 // type LinkStatusType = "ACTIVE" | "EXPIRED" | "DISABLED";
 
@@ -78,20 +79,21 @@ function Dashboard() {
     }
   };
 
-  // add a page loader
   if (isPending || isCreationPending || isDeletionPending)
-    return (
-      <div className="w-full h-full flex justify-center place-items-center text-neutral-400">
-        Loading...
-      </div>
-    );
+    return <DetailedLoader />;
 
-  if (error || creationError || updationError || deletionError)
-    return (
-      <div>{`error has occurred ${
-        error || creationError || updationError || deletionError
-      }`}</div>
-    );
+  // TODO - uncomment this
+  if (error || creationError || updationError || deletionError) {
+    console.error("Error", error, creationError, updationError, deletionError);
+    //   throw new Error(
+    //     error?.message ||
+    //       creationError?.message ||
+    //       updationError?.message ||
+    //       deletionError?.message
+    //   );
+  }
+
+  // TODO in dashbaord- total links created so far, active links so far, campaigns so far - active, upcoming ,completed
 
   return (
     <Fragment>
@@ -107,7 +109,7 @@ function Dashboard() {
         />
       )}
       {/* Dashboard Page Container */}
-      <div className="py-2 px-3 w-full">
+      <div className="py-2 px-3">
         {/* Heading */}
         <div className="flex justify-between place-items-center">
           <div className="text-gray-600 font-medium text-lg">Your URLs</div>

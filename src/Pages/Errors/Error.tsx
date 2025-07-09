@@ -1,10 +1,10 @@
 import { VscDebugDisconnect } from "react-icons/vsc";
-import Brand from "../../components/Brand/Brand";
-import Button from "../../components/Button/Button";
+import Brand from "../../components/ui/Brand/Brand";
 import { IoReload } from "react-icons/io5";
-import Link from "../../components/Button/Link";
 import { PATH_CONSTANTS } from "../../routes/pathConstants";
 import { BiSupport } from "react-icons/bi";
+import Button from "@components/ui/Button/Button";
+import Link from "@components/ui/Button/Link";
 
 const Error = () => {
   return (
@@ -18,7 +18,6 @@ const Error = () => {
           <div className="w-full h-full text-center flex justify-center place-items-center gap-2">
             <VscDebugDisconnect className="p-1 rounded text-5xl bg-warning-regular" />
             <span className="font-bold text-6xl ">Oooops!</span>
-            {/* <div>asdfa</div> */}
           </div>
 
           {/* message and take me home */}

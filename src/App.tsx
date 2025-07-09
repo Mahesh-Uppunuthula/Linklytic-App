@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { RootRoutes, AuthRoutes, AppRoutes } from "./routes";
@@ -8,6 +8,7 @@ import AppLayout from "./layouts/AppLayout";
 import { AuthProvider } from "./context/AuthContext";
 import Error from "./pages/Errors/Error";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Spinner from "./components/ui/Loader/SimpleLoader";
 const Page404 = lazy(() => import("./pages/Errors/Page404"));
 
 export default function App() {
@@ -40,7 +41,9 @@ export default function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <RouterProvider router={router} />
+          <Suspense fallback={<Spinner fullPage />}>
+            <RouterProvider router={router} />
+          </Suspense>
         </AuthProvider>
       </QueryClientProvider>
     </>

@@ -1,12 +1,12 @@
 import { ChangeEvent, useState } from "react";
-import Button from "../components/Button/Button";
-import TextField from "../components/TextField/TextField";
-import Field from "../components/Field/Field";
-import Brand from "../components/Brand/Brand";
+import TextField from "../components/ui/TextField/TextField";
+import Field from "../components/ui/Field/Field";
+import Brand from "../components/ui/Brand/Brand";
 import { PASSWORD_REGEX } from "../constants";
-import Link from "../components/Button/Link";
 import { useNavigate } from "react-router-dom";
 import { PATH_CONSTANTS } from "../routes/pathConstants";
+import Button from "@components/ui/Button/Button";
+import Link from "@components/ui/Button/Link";
 
 const FIELDS = {
   NAME: "name",
@@ -50,7 +50,7 @@ function Signup() {
     signupUser();
   };
 
-  const handleOnChange = (field: string, value: String | boolean) => {
+  const handleOnChange = (field: string, value: string | boolean) => {
     setFormData((prevState) => ({
       ...prevState,
       [field]: value,

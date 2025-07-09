@@ -3,10 +3,10 @@ import Modal, {
   ModalFooter,
   ModalHeader,
   ModalTitle,
-} from "../Modal/Modal";
-import Button from "../Button/Button";
-import TextField from "../TextField/TextField";
-import Field from "../Field/Field";
+} from "../ui/Modal/Modal";
+import Button from "@components/ui/Button/Button";
+import TextField from "../ui/TextField/TextField";
+import Field from "../ui/Field/Field";
 import { useState } from "react";
 import { TLinkBase } from "../../types/global";
 

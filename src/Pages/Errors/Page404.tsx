@@ -1,5 +1,5 @@
 import { FiMinus } from "react-icons/fi";
-import Brand from "../../components/Brand/Brand";
+import Brand from "../../components/ui/Brand/Brand";
 import Link from "../../components/Button/Link";
 import Button from "../../components/Button/Button";
 import { GoArrowLeft } from "react-icons/go";

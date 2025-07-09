@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Button from "../components/Button/Button";
-import TextField from "../components/TextField/TextField";
-import Field from "../components/Field/Field";
-import Brand from "../components/Brand/Brand";
-import Link from "../components/Button/Link";
+import TextField from "../components/ui/TextField/TextField";
+import Field from "../components/ui/Field/Field";
+import Brand from "../components/ui/Brand/Brand";
 import { useNavigate } from "react-router-dom";
 import { PATH_CONSTANTS } from "../routes/pathConstants";
 import useAuth from "../hooks/useAuth";
+import Button from "@components/ui/Button/Button";
+import Link from "@components/ui/Button/Link";
 
 const FIELDS = {
   EMAIL: "email",

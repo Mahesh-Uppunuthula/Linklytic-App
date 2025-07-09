@@ -16,3 +16,21 @@ export const PRODUCTION_SERVER_BASE_URL = "production-server-base-url";
 export const SERVER_API = `${
   import.meta.env.DEV ? LOCAL_SERVER_BASE_URL : PRODUCTION_SERVER_BASE_URL
 }/api/v1/urls`;
+
+export const PATH_CONSTANTS = {
+  PUBLIC: {
+    HOME: "/",
+    ABOUT: "/about",
+    LOGIN: "/login",
+    SIGNUP: "/signup",
+    TERMS_AND_CONDITIONS: "/terms-conditions",
+    FORGOT_PASSWORD: "/forgot-password",
+    HELP_CENTER: "/help-center",
+  },
+  PRIVATE: {
+    DASHBOARD: "/dashboard",
+    ACCOUNT: "/account",
+    LINKS: "/links",
+    FORM_BUILDER: "/form-builder",
+  },
+};

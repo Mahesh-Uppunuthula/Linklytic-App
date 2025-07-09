@@ -1,5 +1,5 @@
 import React from "react";
-import HeroSection from "../components/Section/HeroSection";
+import HeroSection from "../components/sections/HeroSection";
 
 interface SectionProps {
   key: string;
