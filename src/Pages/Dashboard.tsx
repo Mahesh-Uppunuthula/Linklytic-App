@@ -2,16 +2,16 @@ import { Fragment, useState } from "react";
 import Button from "@components/ui/Button/Button";
 import LinkFormModal, {
   TLinkFormSubmitData,
-} from "../components/modals/LinkFormModal";
-import UrlItem, { TUrlAction } from "../components/data/UrlItem/UrlItem";
+} from "@components/modals/LinkFormModal";
+import UrlItem, { TUrlAction } from "@components/data/UrlItem/UrlItem";
 import {
   useCreateUrl,
   useDeleteUrl,
   useUpdateUrl,
   useUrls,
-} from "../hooks/useUrls";
+} from "@hooks/useUrls";
 import { TLinkBase } from "../types/global";
-import DetailedLoader from "../components/ui/Loader/DetailedLoader";
+import DetailedLoader from "@components/ui/Loader/DetailedLoader";
 
 // type LinkStatusType = "ACTIVE" | "EXPIRED" | "DISABLED";
 

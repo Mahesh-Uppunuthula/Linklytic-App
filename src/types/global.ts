@@ -12,7 +12,9 @@ export type TLinkBase = {
   longUrl: string;
 };
 
-export type ElementID =
+export type ElementCategory = "text" | "date" | "selection-choice";
+
+export type ElementType =
   | "single-line-input"
   | "multi-line-input"
   | "number-input"
@@ -20,8 +22,6 @@ export type ElementID =
   | "time-input"
   | "radio-button"
   | "checkbox";
-
-export type ElementCategory = "text" | "date" | "selection-choice";
 
 type ElementCategoryMap = {
   "single-line-input": "text";
@@ -31,16 +31,16 @@ type ElementCategoryMap = {
   "time-input": "date";
   "radio-button": "selection-choice";
   checkbox: "selection-choice";
-} & Record<ElementID, ElementCategory>;
+} & Record<ElementType, ElementCategory>;
 
 export type DraggableItemData = {
-  id: ElementID;
+  id: ElementType;
   from: ComponentType;
   item: BaseItemType;
 };
 
 export type BaseItemType = {
-  id: ElementID;
+  id: ElementType;
   name: string;
   type: ElementCategory;
   parentType: ComponentType;
@@ -53,13 +53,14 @@ export type ColumnType = {
   type: ComponentType;
 };
 
-type ElementIDsByCategory<T extends ElementCategory> = {
+type ElementTypesByCategory<T extends ElementCategory> = {
   [k in keyof ElementCategoryMap]: ElementCategoryMap[k] extends T ? k : never;
 }[keyof ElementCategoryMap];
 
-export type TextCategory = ElementIDsByCategory<"text">;
-export type DateTimeCategory = ElementIDsByCategory<"date">;
-export type SelectionChoiceCategory = ElementIDsByCategory<"selection-choice">;
+export type TextCategory = ElementTypesByCategory<"text">;
+export type DateTimeCategory = ElementTypesByCategory<"date">;
+export type SelectionChoiceCategory =
+  ElementTypesByCategory<"selection-choice">;
 
 export type BuiltInElementsType = {
   text: Record<TextCategory, BaseItemType>;
@@ -71,7 +72,7 @@ export type FormElementType = {
   id: string;
   fieldName: string;
   element: {
-    type: ElementID;
+    type: ElementType;
     category: ElementCategory;
   };
   order: number;
@@ -83,4 +84,64 @@ export type FormElementType = {
   helpText: string;
   disabled?: boolean;
   capitalize?: boolean;
+};
+
+export type Form = {
+  name: string;
+  header: {
+    title: string;
+    description: string;
+  };
+  body: FormElement[];
+  // actions: ActionType;
+};
+
+export type FormElementPropertiesMap = {
+  [type in ElementType]: {
+    id: string;
+    type: type;
+    properties: ElementProperties<type>;
+  };
+};
+
+export type FormElement = FormElementPropertiesMap[ElementType];
+
+export type ElementProperties<T extends ElementType> = T extends PrimitiveFields
+  ? PrimitiveFieldProperties<T>
+  : T extends NonPrimitiveFields
+  ? // ? NonPrimitiveFieldProperties<T>
+    NonPrimitiveFieldProperties
+  : never;
+
+export type BaseFieldProperties = {
+  label: string;
+  description: string;
+  required: boolean;
+  order: number;
+  disabled: boolean;
+};
+
+export type PrimitiveFields = Extract<
+  ElementType,
+  | "single-line-input"
+  | "multi-line-input"
+  | "number-input"
+  | "date-input"
+  | "time-input"
+>;
+
+export type NonPrimitiveFields = Extract<
+  ElementType,
+  "radio-button" | "checkbox"
+>;
+
+export type PrimitiveFieldProperties<T extends PrimitiveFields> =
+  BaseFieldProperties & {
+    placeholder: string; // add phone number to this list
+    min: T extends "date-input" | "time-input" ? string : number;
+    max: T extends "date-input" | "time-input" ? string : number;
+  };
+
+export type NonPrimitiveFieldProperties = BaseFieldProperties & {
+  choiceLabels: string[];
 };
