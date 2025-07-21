@@ -87,14 +87,22 @@ export type FormElementType = {
 };
 
 export type Form = {
-  name: string;
-  header: {
-    title: string;
-    description: string;
-  };
-  body: FormElement[];
+  header: FormHeader;
+  body: FormBody;
   // actions: ActionType;
 };
+
+export type FormHeader = {
+  title: string;
+  description: string;
+};
+
+export type FormBody = {
+  orderedElementIds: string[];
+  elements: FormElement[];
+};
+
+export type FormElement = FormElementPropertiesMap[ElementType];
 
 export type FormElementPropertiesMap = {
   [type in ElementType]: {
@@ -103,9 +111,6 @@ export type FormElementPropertiesMap = {
     properties: ElementProperties<type>;
   };
 };
-
-export type FormElement = FormElementPropertiesMap[ElementType];
-
 export type ElementProperties<T extends ElementType> = T extends PrimitiveFields
   ? PrimitiveFieldProperties<T>
   : T extends NonPrimitiveFields
