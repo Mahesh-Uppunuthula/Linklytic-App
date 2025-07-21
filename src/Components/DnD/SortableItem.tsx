@@ -4,14 +4,14 @@ import { CSS } from "@dnd-kit/utilities";
 import { cn } from "../../libs/helpers";
 import { memo, useCallback } from "react";
 import { LuGripVertical, LuTrash2 } from "react-icons/lu";
-import Label from "../ui/Miscellaneous/Label";
-import { FormElementType } from "../../types/global";
+import { FormElement as FormElementType } from "../../types/global";
 import { motion } from "framer-motion";
 
 import {
   useActiveFormElement,
   useFormBuilderElementsStore,
 } from "../../store/FormBuilderStore";
+import FormElement from "./FormElement";
 
 const SortabbleItem = ({
   item,
@@ -41,7 +41,7 @@ const SortabbleItem = ({
     (state) => state.setActiveFormElementId
   );
 
-  const showOptions = activeFormElementId && item.id === activeFormElementId;
+  const showOptions = !!activeFormElementId && item.id === activeFormElementId;
   const style = { transition, transform: CSS.Transform.toString(transform) };
 
   const handleDelete = useCallback(
@@ -82,21 +82,7 @@ const SortabbleItem = ({
           </button>
         </motion.div>
       )}
-      <div
-        className={cn(
-          `w-full h-full p-2 flex flex-col gap-2  rounded-b-md rounded-l-md`,
-          { "border-2 border-primary-regular": showOptions }
-        )}
-      >
-        <Label
-          name={item.fieldName.length > 0 ? item.fieldName : "Field Name"}
-          capitalize={item.capitalize}
-          required={item.required}
-        />
-        <div className="w-full min-h-[40px] rounded bg-white shadow flex place-items-center justify-start">
-          <span className="p-2 text-neutral-600">{item.placeholder}</span>
-        </div>
-      </div>
+      <FormElement item={item} showOptions={showOptions} />
     </motion.div>
   );
 };

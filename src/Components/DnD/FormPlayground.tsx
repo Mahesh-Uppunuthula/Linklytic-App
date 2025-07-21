@@ -10,7 +10,7 @@ import Show from "../utils/Show";
 import {
   ColumnType,
   DraggableItemData,
-  FormElementType,
+  FormElement,
 } from "../../types/global";
 import SortabbleItem from "./SortableItem";
 import { AnimatePresence, motion } from "framer-motion";
@@ -20,7 +20,7 @@ const dottedBackdrop =
 
 type FormPlaygroundProps = {
   column: ColumnType;
-  items: FormElementType[];
+  items: FormElement[];
 };
 
 export const FormPlayground: React.FC<FormPlaygroundProps> = ({
@@ -126,7 +126,7 @@ const ItemsList = ({
   items,
   column,
 }: {
-  items: FormElementType[];
+  items: FormElement[];
   column: ColumnType;
 }) => {
   if (items.length === 0) {
@@ -147,6 +147,7 @@ const ItemsList = ({
       // layoutId="sortable-items"
     >
       {items.map((item) => (
+        // TODO - item has to be different for each element type
         <SortabbleItem key={item.id} item={item} columnName={column.type} />
       ))}
     </div>

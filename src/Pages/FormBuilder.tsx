@@ -9,18 +9,17 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
 import {
   BaseItemType,
   ColumnType,
   ComponentType,
   DraggableItemData,
-  ElementID,
+  ElementType,
 } from "../types/global";
 import Tabs, { TabType } from "@components/ui/Tabs/Tabs";
 import {
   useActiveFormElement,
-  useFormBuilderElementsStore,
+  useFormBuilder,
 } from "@store/FormBuilderStore";
 import DynamicDragOverlayItem from "@components/DnD/DynamicDragOverlayItem";
 import StaticDragOverlayItem from "@components/DnD/StaticDragOverlayItem";
@@ -33,7 +32,6 @@ import ComponentsLibrary from "@components/DnD/ComponentsLibrary";
 import Button from "@components/ui/Button/Button";
 import InlineTextField from "@components/ui/TextField/InlineTextField";
 import PageHeader from "@components/layout/Header/PageHeader";
-import { buildFormElement } from "@libs/utils";
 import Toolkit from "@components/DnD/Toolkit";
 import { cn } from "@libs/helpers";
 
@@ -72,10 +70,10 @@ const FormBuilder = () => {
     })
   );
 
-  const formElements = useFormBuilderElementsStore((state) => state.elements);
-  const setFormElements = useFormBuilderElementsStore(
-    (state) => state.setElements
-  );
+  // const formElements = useFormBuilderElementsStore((state) => state.elements);
+  // const setFormElements = useFormBuilderElementsStore(
+  //   (state) => state.setElements
+  // );
 
   const activeFormElementId = useActiveFormElement(
     (state) => state.activeFormElementId
@@ -83,14 +81,18 @@ const FormBuilder = () => {
 
   console.log({ activeFormElementId });
 
-  const setActiveFormElement = useActiveFormElement(
-    (state) => state.setActiveFormElementId
-  );
+  // const setActiveFormElement = useActiveFormElement(
+  //   (state) => state.setActiveFormElementId
+  // );
   // const [values, setValues] = useState<FormElementType[]>([]);
   const [activeComponent, setActiveComponent] = useState<null | {
     type: ComponentType;
     element: BaseItemType;
   }>(null);
+
+  const reorder = useFormBuilder((state) => state.reorder);
+  const addElement = useFormBuilder((state) => state.addElement);
+  const elements = useFormBuilder((state) => state.elements);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -103,25 +105,26 @@ const FormBuilder = () => {
     if (fromColumn === "static") {
       const toColumn = over.id as ComponentType;
       if (toColumn !== "dynamic") return;
-      const newFormElement = buildFormElement(activeElement.item);
-      if (formElements.length === 0) setActiveFormElement(newFormElement.id);
+      // const newFormElement = buildFormElement(activeElement.item);
+      // if (elements.length === 0) setActiveFormElement(newFormElement.id);
       // appends to form
-      const updatedFormElements = [
-        ...formElements,
-        { ...newFormElement, order: formElements.length },
-      ];
-      setFormElements(updatedFormElements);
+      // const updatedFormElements = [
+      //   ...elements,
+      //   { ...newFormElement, order: elements.length },
+      // ];
+      // setFormElements(updatedFormElements);
+      addElement(activeElement.id);
     } else if (fromColumn === "dynamic") {
-      const overElementId = over.id as ElementID;
-      const overElementType = overElementId.split("_")[0] as ElementID;
+      const overElementId = over.id as ElementType;
+      const overElementType = overElementId.split("_")[0] as ElementType;
 
       if (!builtInComponentNamesSet.has(overElementType)) return;
 
       console.log("handleDragEnd from dynamic to dynamic");
-      const foundFromElementIndex = formElements.findIndex(
+      const foundFromElementIndex = elements.findIndex(
         (item) => item.id === activeElement.item.id
       );
-      const foundToElementIndex = formElements.findIndex(
+      const foundToElementIndex = elements.findIndex(
         (item) => item.id === overElementId
       );
 
@@ -140,13 +143,14 @@ const FormBuilder = () => {
         // console.log("foundToElementIndex === -1");
         return;
       }
-      const updatedPositions = arrayMove(
-        formElements,
-        foundFromElementIndex,
-        foundToElementIndex
-      );
+      // const updatedPositions = arrayMove(
+      //   formElements,
+      //   foundFromElementIndex,
+      //   foundToElementIndex
+      // );
 
-      setFormElements(updatedPositions);
+      // setFormElements(updatedPositions);
+      reorder(foundFromElementIndex, foundToElementIndex);
     }
 
     // console.log("handleDragEnd", { fromColumn, toColumn });
@@ -259,7 +263,7 @@ const FormBuilder = () => {
                 <FormPlayground
                   key={COLUMNS.dynamicColumn.type}
                   column={COLUMNS.dynamicColumn}
-                  items={formElements}
+                  items={elements}
                 />
               </div>
 

@@ -1,4 +1,9 @@
-import { BuiltInElementsType, ElementID } from "../types/global";
+import {
+  BuiltInElementsType,
+  ElementType,
+  NonPrimitiveFields,
+  PrimitiveFields,
+} from "../types/global";
 
 export const ALL_BUILT_IN_FORM_COMPONENTS: BuiltInElementsType = {
   text: {
@@ -51,7 +56,7 @@ export const ALL_BUILT_IN_FORM_COMPONENTS: BuiltInElementsType = {
   },
 };
 
-export const builtInComponentNamesSet = new Set<ElementID>([
+export const builtInComponentNamesSet = new Set<ElementType>([
   "single-line-input",
   "multi-line-input",
   "number-input",
@@ -60,3 +65,14 @@ export const builtInComponentNamesSet = new Set<ElementID>([
   "radio-button",
   "time-input",
 ]);
+
+export const primitiveFields: Set<PrimitiveFields> = new Set<PrimitiveFields>([
+  "single-line-input",
+  "multi-line-input",
+  "number-input",
+  "date-input",
+  "time-input",
+]);
+
+export const nonPrimitiveFields: Set<NonPrimitiveFields> =
+  new Set<NonPrimitiveFields>(["checkbox", "radio-button"]);

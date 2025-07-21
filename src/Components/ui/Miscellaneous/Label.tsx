@@ -6,12 +6,14 @@ type LableProps = {
   capitalize?: boolean;
   size?: "large" | "medium" | "small";
   required?: boolean;
+  bolded?: boolean;
 };
 const Label: React.FC<LableProps> = ({
   name,
   capitalize,
   size = "medium",
   required,
+  bolded,
 }) => {
   return (
     <label
@@ -21,6 +23,7 @@ const Label: React.FC<LableProps> = ({
         "text-xs": size === "small",
         "text-sm": size === "medium",
         "text-md": size === "large",
+        "font-medium": bolded,
       })}
     >
       {name}
