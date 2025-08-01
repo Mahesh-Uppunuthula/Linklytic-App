@@ -1,4 +1,4 @@
-import { cn } from "@libs/helpers";
+import { cn } from "@lib/utils";
 import { motion } from "framer-motion";
 import { memo, useCallback, useState } from "react";
 

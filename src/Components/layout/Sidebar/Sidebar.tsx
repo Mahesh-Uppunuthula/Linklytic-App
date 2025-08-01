@@ -4,7 +4,7 @@ import { PATH_CONSTANTS } from "../../../constants";
 import { LuLayoutDashboard, LuLibrary, LuPlus } from "react-icons/lu";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 import { TbForms } from "react-icons/tb";
 import { Tooltip } from "react-tooltip";
 import Button from "../../ui/Button/Button";

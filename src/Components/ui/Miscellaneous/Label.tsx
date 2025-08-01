@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 
 type LableProps = {
   name: string;
@@ -28,7 +28,7 @@ const Label: React.FC<LableProps> = ({
     >
       {name}
       {required && (
-        <span className="mx-1 font-medium text-danger-regular text-sm">*</span>
+        <span className="mx-1 font-bold text-danger-regular text-sm">*</span>
       )}
     </label>
   );

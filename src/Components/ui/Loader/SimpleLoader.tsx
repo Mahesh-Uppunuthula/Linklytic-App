@@ -1,4 +1,4 @@
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 
 type SimpleLoaderProps = {
   fullPage?: boolean;

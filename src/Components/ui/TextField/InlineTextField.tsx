@@ -1,5 +1,5 @@
 import { ChangeEvent, memo, useCallback, useRef, useState } from "react";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 import { LuCheck, LuX } from "react-icons/lu";
 import { useOutsideClick } from "../../../hooks/useOutsideClick";
 

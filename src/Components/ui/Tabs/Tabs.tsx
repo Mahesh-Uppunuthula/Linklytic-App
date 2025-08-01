@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ReactElement, useCallback, useState } from "react";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 
 type Id = string;
 export type TabType = {

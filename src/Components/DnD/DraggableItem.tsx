@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { BaseItemType, DraggableItemData, ElementID } from "../../types/global";
 import { useDraggable } from "@dnd-kit/core";
-import { cn } from "../../libs/helpers";
+import { cn } from "@lib/utils";
 import { LuClock, LuText, LuTrash2, LuType } from "react-icons/lu";
 import { Bs123, BsCalendar2Date } from "react-icons/bs";
 import { TbToggleRightFilled } from "react-icons/tb";

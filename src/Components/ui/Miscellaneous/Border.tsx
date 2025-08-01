@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 
 type BorderProps = {
   type?: "vertical" | "horizontal";

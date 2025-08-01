@@ -1,5 +1,5 @@
 import { LuSquirrel } from "react-icons/lu";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 
 type DetailedLoaderProps = {
   fullPage?: boolean;

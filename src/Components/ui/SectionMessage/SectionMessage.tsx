@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 import { IoIosCheckmarkCircle, IoIosInformationCircle } from "react-icons/io";
 import { MdError } from "react-icons/md";
 import { AiFillQuestionCircle } from "react-icons/ai";

@@ -1,13 +1,15 @@
 import Label from "@components/ui/Miscellaneous/Label";
-import { cn } from "@libs/helpers";
-import { FormElement as FormElementType } from "../../types/global";
+import { cn } from "@lib/utils";
+import { FormElement as FormElementTypeAlias } from "../../types/global";
 
 type FormElementProps = {
   showOptions: boolean;
-  item: FormElementType;
+  item: FormElementTypeAlias;
 };
 const FormElement: React.FC<FormElementProps> = ({ item, showOptions }) => {
   const { type, properties } = item;
+
+  if (!properties) return;
 
   function renderElementSpecificProperties() {
     switch (type) {
@@ -37,6 +39,7 @@ const FormElement: React.FC<FormElementProps> = ({ item, showOptions }) => {
         );
     }
   }
+
   return (
     <div
       className={cn(
@@ -45,13 +48,16 @@ const FormElement: React.FC<FormElementProps> = ({ item, showOptions }) => {
       )}
     >
       <div className="flex flex-col">
-        <Label
-          name={properties.label.length > 0 ? properties.label : "Field Name"}
-          required={properties.required}
-          size="large"
-          bolded
-        />
-        {!properties.description.length && (
+        <span className="w-fit h-fit flex place-items-end">
+          <Label
+            name={properties.label.length > 0 ? properties.label : "Field Name"}
+            required={properties.required}
+            size="large"
+            bolded
+          />
+        </span>
+
+        {!!properties.description.length && (
           <span className="text-sm text-neutral-600 text-ellipsis">
             {properties.description}
           </span>

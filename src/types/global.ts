@@ -102,8 +102,6 @@ export type FormBody = {
   elements: FormElement[];
 };
 
-export type FormElement = FormElementPropertiesMap[ElementType];
-
 export type FormElementPropertiesMap = {
   [type in ElementType]: {
     id: string;
@@ -124,6 +122,7 @@ export type BaseFieldProperties = {
   required: boolean;
   order: number;
   disabled: boolean;
+  placeholder: string;
 };
 
 export type PrimitiveFields = Extract<
@@ -142,7 +141,6 @@ export type NonPrimitiveFields = Extract<
 
 export type PrimitiveFieldProperties<T extends PrimitiveFields> =
   BaseFieldProperties & {
-    placeholder: string; // add phone number to this list
     min: T extends "date-input" | "time-input" ? string : number;
     max: T extends "date-input" | "time-input" ? string : number;
   };
@@ -150,3 +148,117 @@ export type PrimitiveFieldProperties<T extends PrimitiveFields> =
 export type NonPrimitiveFieldProperties = BaseFieldProperties & {
   choiceLabels: string[];
 };
+
+export type SingleLineInputProperties = BaseFieldProperties & {
+  maxLength: number;
+  minLength: number;
+};
+
+export type MultiLineInputProperties = BaseFieldProperties & {
+  maxLength: number;
+  minLength: number;
+};
+
+export type NumberInputProperties = BaseFieldProperties & {
+  min: number;
+  max: number;
+};
+
+export type DateInputProperties = BaseFieldProperties & {
+  minDate: string;
+  maxDate: string;
+};
+
+export type TimeInputProperties = BaseFieldProperties & {
+  minTime: string;
+  maxTime: string;
+};
+
+export type RadioButtonProperties = Omit<BaseFieldProperties, "placeholder"> & {
+  choiceLabels: string[];
+};
+
+export type CheckboxProperties = Omit<BaseFieldProperties, "placeholder"> & {
+  choiceLabels: string[];
+};
+
+export type FieldProperties = SingleLineInputProperties &
+  MultiLineInputProperties &
+  NumberInputProperties &
+  DateInputProperties &
+  TimeInputProperties &
+  RadioButtonProperties &
+  CheckboxProperties;
+
+export type FieldPropertyName = keyof FieldProperties;
+export type FieldPropertyValueType = FieldProperties[FieldPropertyName];
+
+type BaseElementProperties = {
+  id: string;
+};
+export type SingleLineInputElement = BaseElementProperties & {
+  type: "single-line-input";
+  properties: SingleLineInputProperties;
+};
+
+export type MultiLineInputElement = BaseElementProperties & {
+  type: "multi-line-input";
+  properties: MultiLineInputProperties;
+};
+
+export type NumberInputElement = BaseElementProperties & {
+  type: "number-input";
+  properties: NumberInputProperties;
+};
+
+export type DateInputElement = BaseElementProperties & {
+  type: "date-input";
+  properties: DateInputProperties;
+};
+
+export type TimeInputElement = BaseElementProperties & {
+  type: "time-input";
+  properties: TimeInputProperties;
+};
+
+export type RadioButtonElement = BaseElementProperties & {
+  type: "radio-button";
+  properties: RadioButtonProperties;
+};
+
+export type CheckboxElement = BaseElementProperties & {
+  type: "checkbox";
+  properties: CheckboxProperties;
+};
+
+export type FormElement =
+  | SingleLineInputElement
+  | MultiLineInputElement
+  | NumberInputElement
+  | DateInputElement
+  | TimeInputElement
+  | RadioButtonElement
+  | CheckboxElement;
+
+// const x: FormElement = {
+//   id: "asdfsadf",
+//   type: "number-input",
+//   properties: {},
+// };
+
+// const x: p = {
+//   id: "asdf",
+//   type: "multi-line-input",
+//   properties: {
+//     label: "asdf",
+//     description: "asdf",
+//     required: false,
+//     order: 0,
+//     disabled: false,
+//     placeholder: "asdf",
+//     minLength: 0,
+//     maxLength: 256,
+//     maxTime: "asdf",
+//     minDate: "asdf",
+//   },
+// };

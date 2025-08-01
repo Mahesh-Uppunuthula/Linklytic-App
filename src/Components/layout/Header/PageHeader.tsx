@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 
 type PageHeaderProps = {
   text: string;

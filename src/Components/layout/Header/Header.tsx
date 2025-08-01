@@ -1,5 +1,5 @@
 import { NavLink, useNavigate, To } from "react-router-dom";
-import { cn } from "../../../libs/helpers";
+import { cn } from "@lib/utils";
 import Brand from "../../ui/Brand/Brand";
 import { PATH_CONSTANTS } from "../../../routes/pathConstants";
 import UserMenu from "../../ui/Menu/UserMenu";

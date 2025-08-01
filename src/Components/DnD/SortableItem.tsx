@@ -1,7 +1,7 @@
 import { ClassValue } from "clsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { cn } from "../../libs/helpers";
+import { cn } from "@lib/utils";
 import { memo, useCallback } from "react";
 import { LuGripVertical, LuTrash2 } from "react-icons/lu";
 import { FormElement as FormElementType } from "../../types/global";
@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 
 import {
   useActiveFormElement,
-  useFormBuilderElementsStore,
+  useFormBuilder,
 } from "../../store/FormBuilderStore";
 import FormElement from "./FormElement";
 
@@ -30,9 +30,7 @@ const SortabbleItem = ({
       },
     });
 
-  const deleteFormElement = useFormBuilderElementsStore(
-    (state) => state.deleteElement
-  );
+  const deleteFormElement = useFormBuilder((state) => state.deleteElement);
 
   const activeFormElementId = useActiveFormElement(
     (state) => state.activeFormElementId

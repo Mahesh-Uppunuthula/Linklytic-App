@@ -1,8 +1,8 @@
+import { EMAIL_REGEX, URL_REGEX } from "@/constants";
+import { cn } from "@lib/utils";
+import { Appearance, StrOrNum } from "@/types/global";
 import React, { ChangeEvent, memo, useRef, useState } from "react";
-import { cn } from "../../../libs/helpers";
 import { IoIosInformationCircle } from "react-icons/io";
-import { Appearance, StrOrNum } from "../../../types/global";
-import { EMAIL_REGEX, URL_REGEX } from "../../../constants";
 
 interface TextField
   extends Omit<
@@ -55,7 +55,7 @@ function TextField({
   const containerClassNames = cn(
     {
       // default styles
-      "w-full h-full rounded pointer-events-none outline outline-1 outline-gray-300 ":
+      "w-full h-full rounded pointer-events-none outline outline-1 outline-gray-300":
         true,
       "focus-within:outline-2 focus-within:outline-primary-regular":
         !isInvalid && !isInputInvalid,

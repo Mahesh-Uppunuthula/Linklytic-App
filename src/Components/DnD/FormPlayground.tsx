@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useDndContext, useDroppable } from "@dnd-kit/core";
-import { cn } from "../../libs/helpers";
+import { cn } from "@lib/utils";
 import LabeledBorder from "../ui/Miscellaneous/LabeledBorder";
 import SectionMessage from "../ui/SectionMessage/SectionMessage";
 import Label from "../ui/Miscellaneous/Label";

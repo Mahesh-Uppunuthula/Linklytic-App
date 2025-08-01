@@ -1,13 +1,64 @@
+import TextField from "@components/ui/TextField/TextField";
+// import {} from "../../constants";
 import { useActiveFormElement, useFormBuilder } from "@store/FormBuilderStore";
+import {
+  BaseFieldProperties,
+  FieldPropertyName,
+  FormElement,
+  PrimitiveFieldProperties,
+  PrimitiveFields,
+} from "../../types/global";
 import { memo } from "react";
+import Label from "@components/ui/Miscellaneous/Label";
+import Toggle from "@components/ui/Button/Toggle";
+
+import DatePicker from "../ui/DatePicker/DatePicker";
+import { DateTime } from "luxon";
+
+const INACCESIBLE_PROPERTIES = new Set<Partial<FieldPropertyName>>([
+  "disabled",
+  "order",
+]);
+
+const getHumanReadablePropertyName = (name: FieldPropertyName) => {
+  switch (name) {
+    case "minLength":
+      return "Min Length";
+    case "maxLength":
+      return "Max Length";
+
+    case "minDate":
+      return "Min Date";
+    case "maxDate":
+      return "Max Date";
+    case "minTime":
+      return "Min Time";
+    case "maxTime":
+      return "Max Time";
+
+    case "choiceLabels":
+      return "Choice Labels";
+    default:
+      return name;
+  }
+};
+
 const Toolkit = () => {
   const _activeFormElement = useActiveFormElement(
     (state) => state.activeFormElementId
   );
 
   const elements = useFormBuilder((state) => state.elements);
-  const activeFormElement = elements.find(
-    (item) => item.id === _activeFormElement
+
+  const activeFormElement: FormElement | undefined =
+    // useMemo(
+    // () =>
+    elements.find((item) => item.id === _activeFormElement);
+  //   [_activeFormElement, elements]
+  // );
+
+  const updateFormElement = useFormBuilder(
+    (state) => state.updateElementProperties
   );
 
   console.log({ activeFormElement }, activeFormElement?.id);
@@ -19,6 +70,7 @@ const Toolkit = () => {
   )
     return null;
 
+  // updateFormElement("", []);
   // const renderFields = useCallback(() => {
   //   if (!activeFormElement) return;
   // }, [activeFormElement]);
@@ -45,34 +97,203 @@ const Toolkit = () => {
   //     });
   //   };
 
-  const renderProperties = () => {
-    switch (activeFormElement.type) {
-      case "single-line-input":
-      case "multi-line-input":
-      case "number-input":
-      case "date-input":
-      case "time-input":
+  const getProperty = (propertyName: FieldPropertyName) => {
+    if (
+      propertyName in activeFormElement.properties === false ||
+      INACCESIBLE_PROPERTIES.has(propertyName)
+    )
+      return null;
+
+    switch (propertyName) {
+      case "label":
+      case "description":
+      case "placeholder": {
         return (
-          // <TextField
-          //   key={"placeholder"}
-          //   type={"text"}
-          //   value={activeFormElement.placeholder}
-          //   onChange={handleInputChange("placeholder")}
-          // />
-          <div></div>
+          <TextField
+            key={propertyName}
+            type="text"
+            value={
+              (activeFormElement.properties as BaseFieldProperties)[
+                propertyName
+              ]
+            }
+            placeholder={propertyName}
+            onChange={(e) => {
+              const value = e.target.value;
+              console.log({ value });
+              updateFormElement(activeFormElement.id, {
+                [propertyName]: value,
+              });
+            }}
+          />
         );
-      case "checkbox":
-      case "radio-button":
+      }
+
+      case "disabled":
+      case "required": {
         return (
-          // <TextField
-          //   key={"placeholder"}
-          //   type={"text"}
-          //   value={activeFormElement.placeholder}
-          //   onChange={handleInputChange("placeholder")}
-          // />
-          <div></div>
+          <Toggle
+            key={propertyName}
+            value={activeFormElement.properties[propertyName] as boolean}
+            onChange={(value) => {
+              updateFormElement(activeFormElement.id, {
+                [propertyName]: value,
+              });
+            }}
+          />
         );
+      }
+      case "max": {
+        if ("max" in activeFormElement.properties)
+          return (
+            <TextField
+              key={propertyName}
+              type="number"
+              value={activeFormElement.properties[propertyName] as number}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                updateFormElement(activeFormElement.id, {
+                  max: value,
+                });
+              }}
+            />
+          );
+        break;
+      }
+
+      case "min": {
+        if ("min" in activeFormElement.properties)
+          return (
+            <TextField
+              key={propertyName}
+              type="number"
+              value={activeFormElement.properties[propertyName] as number}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                updateFormElement(activeFormElement.id, {
+                  min: value,
+                });
+              }}
+            />
+          );
+        break;
+      }
+
+      case "minLength": {
+        if ("minLength" in activeFormElement.properties)
+          return (
+            <TextField
+              key={propertyName}
+              type="number"
+              value={activeFormElement.properties["minLength"] as number}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                updateFormElement(activeFormElement.id, {
+                  minLength: Math.max(Math.min(value, 256), 0),
+                });
+              }}
+            />
+          );
+        break;
+      }
+      case "maxLength": {
+        if ("maxLength" in activeFormElement.properties)
+          return (
+            <TextField
+              key={propertyName}
+              type="number"
+              value={activeFormElement.properties[propertyName] as number}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                updateFormElement(activeFormElement.id, {
+                  maxLength: Math.max(Math.min(value, 256), 0),
+                });
+              }}
+            />
+          );
+        break;
+      }
+
+      case "minDate": {
+        if ("minDate" in activeFormElement.properties) {
+          return (
+            <DatePicker
+              mode="single"
+              captionLayout="dropdown-months"
+              placeholder={propertyName}
+              selected={DateTime.fromISO(
+                activeFormElement.properties?.minDate
+              ).toJSDate()}
+              onSelect={(date) => {
+                if (date) {
+                  updateFormElement(activeFormElement.id, {
+                    minDate: DateTime.fromJSDate(date).toISO() ?? "",
+                  });
+                }
+              }}
+            />
+          );
+        }
+        break;
+      }
+      case "maxDate": {
+        if ("maxDate" in activeFormElement.properties) {
+          return (
+            <DatePicker
+              mode="single"
+              captionLayout="dropdown-months"
+              placeholder={propertyName}
+              selected={DateTime.fromISO(
+                activeFormElement.properties?.maxDate
+              ).toJSDate()}
+              onSelect={(date) => {
+                if (date) {
+                  updateFormElement(activeFormElement.id, {
+                    maxDate: DateTime.fromJSDate(date).toISO() ?? "",
+                  });
+                }
+              }}
+            />
+          );
+        }
+        break;
+      }
+
+      case "order":
+        // do not let user change order via toolkit
+        break;
+
+      // default:
+      //   return propertyName;
     }
+  };
+
+  const renderProperties = () => {
+    const properties =
+      activeFormElement.properties as PrimitiveFieldProperties<PrimitiveFields>;
+
+    const propertyEntries = Object.entries(properties);
+
+    return (
+      <div className="w-full h-full flex flex-col gap-1">
+        {propertyEntries.map((property) => {
+          const propertyName = property[0] as FieldPropertyName;
+          // const value = property[1] as FieldPropertyValueType;
+
+          return (
+            <div>
+              {!INACCESIBLE_PROPERTIES.has(propertyName) && (
+                <Label
+                  capitalize
+                  name={getHumanReadablePropertyName(propertyName)}
+                />
+              )}
+              {getProperty(propertyName)}
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -169,9 +390,9 @@ const Toolkit = () => {
             </div>
           </div> */}
 
-          {Object.entries(activeFormElement.properties).map((item) => (
+          {/* {Object.entries(activeFormElement.properties).map((item) => (
             <span>{JSON.stringify(item)}</span>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>

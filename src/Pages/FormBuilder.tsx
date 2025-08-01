@@ -17,23 +17,20 @@ import {
   ElementType,
 } from "../types/global";
 import Tabs, { TabType } from "@components/ui/Tabs/Tabs";
-import {
-  useActiveFormElement,
-  useFormBuilder,
-} from "@store/FormBuilderStore";
+import { useActiveFormElement, useFormBuilder } from "@store/FormBuilderStore";
 import DynamicDragOverlayItem from "@components/DnD/DynamicDragOverlayItem";
 import StaticDragOverlayItem from "@components/DnD/StaticDragOverlayItem";
 import FormPlayground from "@components/DnD/FormPlayground";
 import {
   ALL_BUILT_IN_FORM_COMPONENTS,
   builtInComponentNamesSet,
-} from "@libs/constants";
+} from "@lib/constants";
 import ComponentsLibrary from "@components/DnD/ComponentsLibrary";
 import Button from "@components/ui/Button/Button";
 import InlineTextField from "@components/ui/TextField/InlineTextField";
 import PageHeader from "@components/layout/Header/PageHeader";
 import Toolkit from "@components/DnD/Toolkit";
-import { cn } from "@libs/helpers";
+import { cn } from "@lib/utils";
 
 const COLUMNS: Record<string, ColumnType> = {
   staticColumn: {
@@ -69,11 +66,6 @@ const FormBuilder = () => {
       },
     })
   );
-
-  // const formElements = useFormBuilderElementsStore((state) => state.elements);
-  // const setFormElements = useFormBuilderElementsStore(
-  //   (state) => state.setElements
-  // );
 
   const activeFormElementId = useActiveFormElement(
     (state) => state.activeFormElementId

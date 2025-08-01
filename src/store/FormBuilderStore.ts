@@ -1,37 +1,38 @@
 import { create, StateCreator } from "zustand";
 import {
   ElementType,
+  FieldProperties,
   Form,
   FormElement,
-  FormElementType,
+  // FormElementType,
 } from "../types/global";
 import { arrayMove } from "@dnd-kit/sortable";
-import { createElement } from "@libs/helpers";
+import { createElement } from "@lib/helpers";
 
-type FormBuilderElementsStoreType = {
-  elements: FormElementType[];
-  setElements: (elements: FormElementType[]) => void;
-  deleteElement: (id: string) => void;
-  updateElement: (id: string, updatedFields: Partial<FormElementType>) => void;
-};
+// type FormBuilderElementsStoreType = {
+//   elements: FormElementType[];
+//   setElements: (elements: FormElementType[]) => void;
+//   deleteElement: (id: string) => void;
+//   updateElement: (id: string, updatedFields: Partial<FormElementType>) => void;
+// };
 
-export const useFormBuilderElementsStore = create<FormBuilderElementsStoreType>(
-  (set) => ({
-    elements: [],
-    setElements: (elements: FormElementType[]) => set({ elements }),
-    deleteElement: (id: string) =>
-      set((state) => ({
-        elements: state.elements.filter((element) => element.id !== id),
-      })),
-    updateElement: (id: string, updatedFields: Partial<FormElementType>) => {
-      set((state) => ({
-        elements: state.elements.map((item) =>
-          item.id === id ? { ...item, ...updatedFields } : item
-        ),
-      }));
-    },
-  })
-);
+// export const useFormBuilderElementsStore = create<FormBuilderElementsStoreType>(
+//   (set) => ({
+//     elements: [],
+//     setElements: (elements: FormElementType[]) => set({ elements }),
+//     deleteElement: (id: string) =>
+//       set((state) => ({
+//         elements: state.elements.filter((element) => element.id !== id),
+//       })),
+//     updateElement: (id: string, updatedFields: Partial<FormElementType>) => {
+//       set((state) => ({
+//         elements: state.elements.map((item) =>
+//           item.id === id ? { ...item, ...updatedFields } : item
+//         ),
+//       }));
+//     },
+//   })
+// );
 
 export const useActiveFormElement = create<{
   activeFormElementId: string | null;
@@ -64,9 +65,9 @@ type FormBodyActions = {
   reorder: (sourceIndex: number, destinationIndex: number) => void;
   addElement: (type: ElementType) => void;
   deleteElement: (id: string) => void;
-  updateElement: (
+  updateElementProperties: (
     id: string,
-    updatedFields: Partial<Form["body"]["elements"]>
+    updatedFields: Partial<FieldProperties>
   ) => void;
 };
 const createFormBodySlice: StateCreator<Form["body"] & FormBodyActions> = (
@@ -74,6 +75,7 @@ const createFormBodySlice: StateCreator<Form["body"] & FormBodyActions> = (
 ) => ({
   orderedElementIds: [],
   elements: [],
+
   reorder: (sourceIndex: number, destinationIndex: number) => {
     set((state) => ({
       orderedElementIds: arrayMove(
@@ -97,15 +99,81 @@ const createFormBodySlice: StateCreator<Form["body"] & FormBodyActions> = (
       elements: state.elements.filter((item) => item.id !== id),
     }));
   },
-  updateElement: (
+  updateElementProperties: (
     id: string,
-    updatedFields: Partial<Form["body"]["elements"]>
+    updatedFields: Partial<FieldProperties>
   ) => {
-    set((state) => ({
-      elements: state.elements.map((item) =>
-        item.id === id ? { ...item, ...updatedFields } : item
-      ),
-    }));
+    set((state) => {
+      const updatedElements = state.elements.map((element) => {
+        if (element.id !== id) return element;
+        switch (element.type) {
+          case "single-line-input": {
+            return {
+              ...element,
+              properties: {
+                ...element.properties,
+                ...updatedFields,
+              },
+            };
+          }
+          case "multi-line-input": {
+            return {
+              ...element,
+              properties: {
+                ...element.properties,
+                ...updatedFields,
+              },
+            };
+          }
+          case "number-input": {
+            return {
+              ...element,
+              properties: {
+                ...element.properties,
+                ...updatedFields,
+              },
+            };
+          }
+          case "date-input": {
+            return {
+              ...element,
+              properties: {
+                ...element.properties,
+                ...updatedFields,
+              },
+            };
+          }
+          case "time-input": {
+            return {
+              ...element,
+              properties: {
+                ...element.properties,
+                ...updatedFields,
+              },
+            };
+          }
+          case "checkbox": {
+            return {
+              ...element,
+              properties: {
+                ...element.properties,
+                ...updatedFields,
+              },
+            };
+          }
+          case "radio-button": {
+            return {
+              ...element,
+              properties: {
+                ...element.properties,
+                ...updatedFields,
+              },
+            };
+          }
+        }
+      });
+      return { elements: updatedElements };
+    });
   },
 });
 

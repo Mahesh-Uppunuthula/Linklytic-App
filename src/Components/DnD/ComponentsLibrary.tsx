@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useDroppable } from "@dnd-kit/core";
-import { cn } from "../../libs/helpers";
+import { cn } from "@lib/utils";
 import Label from "../ui/Miscellaneous/Label";
 import { BuiltInElementsType, ColumnType } from "../../types/global";
 import DraggableItem from "./DraggableItem";
