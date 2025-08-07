@@ -281,7 +281,7 @@ const Toolkit = () => {
           // const value = property[1] as FieldPropertyValueType;
 
           return (
-            <div>
+            <div key={propertyName}>
               {!INACCESIBLE_PROPERTIES.has(propertyName) && (
                 <Label
                   capitalize

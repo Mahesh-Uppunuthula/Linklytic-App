@@ -53,21 +53,12 @@ function TextField({
   );
 
   const containerClassNames = cn(
+    "w-full h-full rounded pointer-events-none !outline outline-1 outline-gray-300",
     {
-      // default styles
-      "w-full h-full rounded pointer-events-none outline outline-1 outline-gray-300":
-        true,
       "focus-within:outline-2 focus-within:outline-primary-regular":
         !isInvalid && !isInputInvalid,
-      // active styles
-
-      //focus styles
-
-      // hover styels
-
-      // invalid styles
       "outline-2 outline-danger-regular": isInvalid || isInputInvalid,
-      "has-[:invalid]:outline-danger-regular ": true,
+      "has-[:invalid]:outline-danger-regular": true,
       "cursor-not-allowed text-neutral-600 bg-gray-50": props.disabled,
     },
     `min-w-[${minWidth}] min-h-[${minHeight}]`,
