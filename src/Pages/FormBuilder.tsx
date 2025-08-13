@@ -16,7 +16,6 @@ import {
   DraggableItemData,
   ElementType,
 } from "../types/global";
-import Tabs, { TabType } from "@components/ui/Tabs/Tabs";
 import { useActiveFormElement, useFormBuilder } from "@store/FormBuilderStore";
 import DynamicDragOverlayItem from "@components/DnD/DynamicDragOverlayItem";
 import StaticDragOverlayItem from "@components/DnD/StaticDragOverlayItem";
@@ -31,6 +30,10 @@ import InlineTextField from "@components/ui/TextField/InlineTextField";
 import PageHeader from "@components/layout/Header/PageHeader";
 import Toolkit from "@components/DnD/Toolkit";
 import { cn } from "@lib/utils";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/ui/ToggleGroup/ToggleGroup";
 
 const COLUMNS: Record<string, ColumnType> = {
   staticColumn: {
@@ -45,16 +48,10 @@ const COLUMNS: Record<string, ColumnType> = {
   },
 };
 
-const TABS: TabType[] = [
-  {
-    id: "raw",
-    label: "Raw",
-  },
-  {
-    id: "preview",
-    label: "Preview",
-  },
-];
+const tabs = {
+  Raw: "raw",
+  Preview: "preview",
+};
 
 const FormBuilder = () => {
   const sensors = useSensors(
@@ -85,6 +82,7 @@ const FormBuilder = () => {
   const reorder = useFormBuilder((state) => state.reorder);
   const addElement = useFormBuilder((state) => state.addElement);
   const elements = useFormBuilder((state) => state.elements);
+  const [activeTab, setActiveTab] = useState(tabs.Raw);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -221,12 +219,22 @@ const FormBuilder = () => {
             </div>
             <div className="h-full p-1 flex gap-2 place-items-center">
               {/* raw and preview tabs */}
-              <Tabs
-                tabs={TABS}
-                onChange={(id) => {
-                  console.log({ id });
+              <ToggleGroup
+                type="single"
+                value={activeTab}
+                onValueChange={(value) => {
+                  if (value)
+                    setActiveTab(value === tabs.Raw ? tabs.Raw : tabs.Preview);
                 }}
-              />
+              >
+                <ToggleGroupItem value={tabs.Raw}>
+                  <span>{tabs.Raw}</span>
+                </ToggleGroupItem>
+                <ToggleGroupItem value={tabs.Preview}>
+                  <span>{tabs.Preview}</span>
+                </ToggleGroupItem>
+              </ToggleGroup>
+
               {/* save button */}
               <div>
                 <Button size="small" bolded appearance="primary">

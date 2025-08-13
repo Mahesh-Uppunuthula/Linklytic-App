@@ -42,6 +42,8 @@ const Tabs: React.FC<TabsProps> = ({
     },
     [onChange]
   );
+  console.log({ activeTab });
+
   return (
     <div className="w-full h-full">
       {/* container */}
